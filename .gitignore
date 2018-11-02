@@ -5,7 +5,7 @@
 *.lock
 *.exe
 *.pdb
-/umlparser/target/
+/umlparser/target/*
 
 
 # Compiled class file

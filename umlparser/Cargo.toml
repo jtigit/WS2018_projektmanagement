@@ -1,0 +1,6 @@
+[package]
+name = "umlparser"
+version = "0.1.0"
+authors = ["jtissen1 <jakob.tissen@fh-bielefeld.de>"]
+
+[dependencies]

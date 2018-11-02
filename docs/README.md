@@ -1,6 +1,3 @@
-*jakob tissen*
-# Software-Projektmanagement
+# Rules: 
 
-* [Tagebuch](https://jtigit.github.io/jtissenSp/docs/Tagebuch/)
-
-* [Auswertung](https://jtigit.github.io/jtissenSp/docs/Auswertung/)
+Der Master enthält nur comilierbaren code.

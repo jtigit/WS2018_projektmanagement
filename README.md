@@ -1,1 +1,1 @@
-# WS2018_projektmanagement
+# SoftwareEngineering WS18/19

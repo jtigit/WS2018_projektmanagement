@@ -3,7 +3,9 @@
 *.o
 *.bin
 *.lock
-*/target/debug/*
+*.exe
+*.pdb
+*\target\debug\*
 
 
 

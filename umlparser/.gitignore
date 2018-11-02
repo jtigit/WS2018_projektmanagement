@@ -1,0 +1,11 @@
+
+# generated files
+*.o
+*.bin
+*.lock
+*.exe
+*.pdb
+*\target\debug\*
+
+
+

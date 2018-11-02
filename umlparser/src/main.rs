@@ -2,7 +2,7 @@ use std::env;
 use std::fs;
 
 fn main() {
-//Konfigurationsvariablen werden eingelesen:
+//Konfigurationsvariablen werden eingelesen :
     let args: Vec<String> = env::args().collect();
 	
     let (query, filename) = parse_config(&args);

@@ -1,3 +1,3 @@
 # Rules: 
 
-Der Master enthält nur comilierbaren code.
+Der Master enthält nur compilierbaren code.

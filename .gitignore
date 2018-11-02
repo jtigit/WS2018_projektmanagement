@@ -1,0 +1,8 @@
+
+# generated files
+*.o
+*.bin
+*.lock
+*.exe
+*.pdb
+/umlparser/target/*

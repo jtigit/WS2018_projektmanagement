@@ -3,7 +3,7 @@
 *.o
 *.bin
 *.lock
-/target/debug/*
+*/target/debug/*
 
 
 

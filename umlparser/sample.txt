@@ -1,2 +1,19 @@
-UmL Syntax
-Klasse { a, b}
+Klassendiagramm
+
+Klasse{
+typ:abstract ; name:parser ; impl: Vater, Mutter; extends: Opa
+---
++ atribute 
+
+---
+- methoden
+}
+
+Klasse{
+typ:public ; name:parser2 ; impl:Vater, Mutter; extends:Opa
+---
++ atribute 
+
+---
+- methoden
+}

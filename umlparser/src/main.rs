@@ -1,26 +1,30 @@
-extern crate umlparser;
+#![feature(proc_macro_hygiene, decl_macro, plugin, custom_derive)]
+#![plugin(rocket_codegen)]
 
-use std::env;
-use std::process;
+extern crate rocket;
+extern crate rocket_contrib;
+extern crate tera;
 
-use umlparser::Config;
+mod routes;
+
+use rocket_contrib::Template;
 
 fn main() {
-//Konfigurationsvariablen werden eingelesen:
-	let args: Vec<String> = env::args().collect();
+    start_rocket();
+}
 
-    let config = Config::new(&args).unwrap_or_else(|err| {
-        println!("Problem parsing arguments: {}", err);
-        process::exit(1);
-    });
-
-    println!("Searching for {}", config.query);
-    println!("In file {}", config.filename);
-
-    if let Err(e) = umlparser::run(config) {
-        println!("Application error: {}", e);
-
-        process::exit(1);
-    }
-
+fn start_rocket() {
+    rocket::ignite()
+        .mount(
+            "/",
+            routes![
+                routes::defaultroute::index,
+            ]
+        ).mount(
+        "/api",
+        routes![
+                 routes::apiroute::test,
+            ]
+    ).attach(Template::fairing()) // Für Templates
+        .launch();
 }

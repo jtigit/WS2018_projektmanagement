@@ -1,4 +1,3 @@
-
 # generated files
 *.o
 *.bin
@@ -6,6 +5,4 @@
 *.exe
 *.pdb
 *\target\debug\*
-
-
-
+.idea\

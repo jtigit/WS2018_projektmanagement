@@ -1,0 +1,12 @@
+html, body, .container {
+    height: 100%;
+}
+
+.col-xs-6, .row, form, .form-group {
+    height: 95%;
+}
+
+#textArea {
+    height: 100%;
+    min-height: 100%;
+}

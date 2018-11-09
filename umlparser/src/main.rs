@@ -7,7 +7,17 @@ extern crate tera;
 
 mod routes;
 
+use std::io;
 use rocket_contrib::Template;
+
+use std::path::{Path, PathBuf};
+use rocket::response::NamedFile;
+
+
+#[get("/static/<file..>")]
+fn static_content(file: PathBuf) -> io::Result<NamedFile> {
+    NamedFile::open(Path::new("static/").join(file))
+}
 
 fn main() {
     start_rocket();
@@ -19,12 +29,13 @@ fn start_rocket() {
             "/",
             routes![
                 routes::defaultroute::index,
+                 static_content
             ]
         ).mount(
         "/api",
         routes![
                  routes::apiroute::test,
             ]
-    ).attach(Template::fairing()) // Für Templates
+        ).attach(Template::fairing()) // Für Templates
         .launch();
 }

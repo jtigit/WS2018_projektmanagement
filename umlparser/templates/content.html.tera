@@ -1,19 +1,27 @@
 {% extends "base" %}
 
 {% block content %}
-<div class="container section">
-    <div class="row">
-        <div class="col s6">
-            <form action="/api/submit" method="post">
-                <div class="form-group ">
-                    <textarea class="form-control z-depth-1" id="textArea" name="value" placeholder="abc -> fsafafa"
-                              autofocus></textarea>
+<div id="base" class="container section">
+    <div class="row height100">
+        <div class="col s6 height100">
+            <form class="height100" action="/api/submit" method="post">
+                <div class="form-group height100">
+                    <textarea class="form-control z-depth-1 height100" id="textArea" name="value" placeholder="abc -> fsafafa"
+                              autofocus>{{input_message}}</textarea>
                 </div>
-                <input type="submit" value="Erstellen">
+                <button class="btn waves-effect waves-light right" name="action" value="send" type="submit">Senden
+                    <i class="material-icons right">send</i>
+                </button>
+                <button class="btn waves-effect waves-light right grey" name="action" value="save" type="submit">Speichern
+                    <i class="material-icons right grey">save</i>
+                </button>
+                <button class="btn waves-effect waves-light red" name="action" value="delete" type="submit">Löschen
+                    <i class="material-icons right red">delete</i>
+                </button>
             </form>
         </div>
         <div class="col s6">
-            <p>{{ my_message }}</p>
+            <p>{{input_message}}</p>
 
         </div>
     </div>

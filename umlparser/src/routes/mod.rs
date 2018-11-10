@@ -1,1 +1,1 @@
-pub mod apiroute;
+pub mod routes;

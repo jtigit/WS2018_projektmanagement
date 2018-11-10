@@ -6,7 +6,7 @@
         <div class="col s6 height100">
             <form class="height100" action="/api/submit" method="post">
                 <div class="form-group height100">
-                    <textarea class="form-control z-depth-1 height100" id="textArea" name="value" placeholder="abc -> fsafafa"
+                    <textarea class="form-control z-depth-1 height100 white" id="textArea" name="value" placeholder="abc -> fsafafa"
                               autofocus>{{input_message}}</textarea>
                 </div>
                 <button class="btn waves-effect waves-light right" name="action" value="send" type="submit">Senden

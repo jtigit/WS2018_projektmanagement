@@ -23,7 +23,7 @@
             <a href="/" class="brand-logo black-text">UMLParser</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li><a href="/" class="grey-text text-darken-2">Startseite</a></li>
-                <li><a href="/" class="grey-text text-darken-2">Erklärung</a></li>
+                <li><a href="/howto" class="grey-text text-darken-2">Erklärung</a></li>
                 <li><a href="/about" class="grey-text text-darken-2">Über Uns</a></li>
             </ul>
         </div>

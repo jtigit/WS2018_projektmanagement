@@ -21,6 +21,8 @@ fn start_rocket() {
             "/",
             routes![
                  routes::routes::index,
+                 routes::routes::about,
+                 routes::routes::howto,
                  routes::routes::static_content
             ]
         ).mount(

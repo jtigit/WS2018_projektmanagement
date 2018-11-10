@@ -32,6 +32,18 @@ pub fn index(flash: Option<FlashMessage>) -> Template {
     Template::render("content", &context)
 }
 
+#[get("/about")]
+pub fn about() -> Template {
+    let mut context = Context::new();
+    Template::render("about", &context)
+}
+
+#[get("/howto")]
+pub fn howto() -> Template {
+    let mut context = Context::new();
+    Template::render("howto", &context)
+}
+
 #[post("/submit", data = "<eingabe>")]
 fn submit_task(eingabe: Form<Eingabe>) -> Flash<Redirect> {
     let x: Eingabe = eingabe.into_inner();

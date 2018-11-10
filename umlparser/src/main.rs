@@ -14,6 +14,7 @@ use std::path::{Path, PathBuf};
 use rocket::response::NamedFile;
 
 
+
 #[get("/static/<file..>")]
 fn static_content(file: PathBuf) -> io::Result<NamedFile> {
     NamedFile::open(Path::new("static/").join(file))
@@ -28,13 +29,13 @@ fn start_rocket() {
         .mount(
             "/",
             routes![
-                routes::defaultroute::index,
+                 routes::apiroute::index,
                  static_content
             ]
         ).mount(
         "/api",
         routes![
-                 routes::apiroute::test,
+                 routes::apiroute::submit_task
             ]
         ).attach(Template::fairing()) // Für Templates
         .launch();

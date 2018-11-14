@@ -7,18 +7,18 @@ use std::io;
 
 use rocket::request::{Form, FlashMessage};
 use rocket::response::{Flash, Redirect};
-use rocket_contrib::Template;
+use rocket_contrib::templates::Template;
 use tera::Context;
 
 #[derive(FromForm)]
-struct Eingabe {
+pub struct Eingabe {
     value: String,
     action: String
 }
 
 
 #[get("/static/<file..>")]
-fn static_content(file: PathBuf) -> io::Result<NamedFile> {
+pub fn static_content(file: PathBuf) -> io::Result<NamedFile> {
     NamedFile::open(Path::new("static/").join(file))
 }
 
@@ -34,25 +34,25 @@ pub fn index(flash: Option<FlashMessage>) -> Template {
 
 #[get("/about")]
 pub fn about() -> Template {
-    let mut context = Context::new();
+    let context = Context::new();
     Template::render("about", &context)
 }
 
 #[get("/howto")]
 pub fn howto() -> Template {
-    let mut context = Context::new();
+    let context = Context::new();
     Template::render("howto", &context)
 }
 
 #[post("/submit", data = "<eingabe>")]
-fn submit_task(eingabe: Form<Eingabe>) -> Flash<Redirect> {
+pub fn submit_task(eingabe: Form<Eingabe>) -> Flash<Redirect> {
     let x: Eingabe = eingabe.into_inner();
 
-    if("send".eq(&x.action)) {
+    if "send".eq(&x.action) {
         Flash::success(Redirect::to("/"), &x.value)
-    } else if("save".eq(&x.action)) {
+    } else if "save".eq(&x.action) {
         Flash::error(Redirect::to("/"), &x.value)
-    } else if("delete".eq(&x.action)) {
+    } else if "delete".eq(&x.action) {
         Flash::success(Redirect::to("/"), "")
     } else {
         Flash::error(Redirect::to("/"), &x.value)

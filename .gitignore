@@ -5,5 +5,6 @@
 *.lock
 *.exe
 *.pdb
+*.iml
 /umlparser/target/*
 .idea/*

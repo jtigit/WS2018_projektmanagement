@@ -1,18 +1,35 @@
 {% extends "base" %}
 
 {% block content %}
+<script type='text/javascript'>
+    function doDL(s){
+        function dataUrl(data) {
+            return "data:x-application/text," + escape(data);
+        }
+        var downloadLink = document.createElement("a");
+        downloadLink.href = dataUrl(s);
+        downloadLink.download = "uml.txt";
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    }
+</script>
+
 <div id="base" class="container section">
     <div class="row height100">
         <div class="col s6 height100">
             <form class="height100" action="/api/submit" method="post">
                 <div class="form-group height100">
-                    <textarea class="form-control z-depth-1 height100 white" id="textArea" name="value" placeholder="abc -> fsafafa"
+                    <textarea class="form-control z-depth-1 height100 white" id="textArea" name="value"
+                              placeholder="abc -> fsafafa"
                               autofocus>{{input_message}}</textarea>
                 </div>
                 <button class="btn waves-effect waves-light right" name="action" value="send" type="submit">Senden
                     <i class="material-icons right">send</i>
                 </button>
-                <button class="btn waves-effect waves-light right grey" name="action" value="save" type="submit">Speichern
+                <button class="btn waves-effect waves-light right grey" type="button" download="uml.txt" onclick='doDL(document.getElementById("textArea").value)'>
+                    Speichern
                     <i class="material-icons right grey">save</i>
                 </button>
                 <button class="btn waves-effect waves-light red" name="action" value="delete" type="submit">Löschen
@@ -21,8 +38,11 @@
             </form>
         </div>
         <div class="col s6">
-            <p>{{input_message}}</p>
-
+            <img class="responsive-img" src={{replaceImage}}>
+            <button class="btn waves-effect waves-light right grey" name="action" value="saveimg" type="submit">
+                Speichern
+                <i class="material-icons right grey">save</i>
+            </button>
         </div>
     </div>
 </div>

@@ -1,6 +1,8 @@
 extern crate tera;
 
 use std::path::{Path, PathBuf};
+use std::fs::File;
+use std::io::Write;
 use rocket::response::NamedFile;
 
 use std::io;
@@ -29,6 +31,7 @@ pub fn index(flash: Option<FlashMessage>) -> Template {
     let s = flash.map(|msg| format!("{}", msg.msg())).unwrap_or_else(|| "abc -> def".to_string());
 
     context.add("input_message", &s);
+    context.add("replaceImage", &"https://via.placeholder.com/800x800");
     Template::render("content", &context)
 }
 
@@ -50,8 +53,6 @@ pub fn submit_task(eingabe: Form<Eingabe>) -> Flash<Redirect> {
 
     if "send".eq(&x.action) {
         Flash::success(Redirect::to("/"), &x.value)
-    } else if "save".eq(&x.action) {
-        Flash::error(Redirect::to("/"), &x.value)
     } else if "delete".eq(&x.action) {
         Flash::success(Redirect::to("/"), "")
     } else {

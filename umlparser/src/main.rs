@@ -25,7 +25,8 @@ fn start_rocket() {
         ).mount(
         "/api",
         routes![
-                 routes::routes::submit_task
+                 routes::routes::submit_task,
+
             ]
         ).attach(Template::fairing()) // Für Templates
         .launch();

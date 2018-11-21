@@ -1,19 +1,33 @@
 Klassendiagramm
 
 Klasse{
-typ:abstract ; name:parser ; impl: Vater, Mutter; extends: Opa
----
+typ:abstract name:parser 
+--
 + atribute 
 
----
+--
 - methoden
 }
 
 Klasse{
-typ:public ; name:parser2 ; impl:Vater, Mutter; extends:Opa
+typ:public ; name:parser2 ;
 ---
 + atribute 
 
 ---
 - methoden
 }
+Klasse{
+typ:public ; name:parser 3 
+---
++ atribute 
+
+---
+- methoden
+}
+
+V{von: A ; zu: B ; typ: impl ; m1: 0..n ; m2: 3 ;desc: }
+V{von: A ; zu: B ; typ: ext ; m1: 0..n ; m2: 3 ;desc: }
+V{von: A ; zu: B ; typ:  ; m1: 0..n ; m2: 3 ;desc: }
+V{von: A ; zu: B ; typ: impl ; m1: 0..n ; m2: 3 ;desc: }
+V{von: A ; zu: B ; typ: impl ; m1: 0..n ; m2: 3 ;desc: }

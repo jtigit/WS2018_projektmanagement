@@ -5,7 +5,8 @@ use regex::Regex;
 
 #[derive(Clone)]
 pub struct Klasse {
-    x :u32 ,y:u32,
+    x: u32,
+    y: u32,
     id: Vec<String>,
     attribute: Vec<String>,
     methoden: Vec<String>,
@@ -34,13 +35,13 @@ impl Klasse {
         }
         (l, b)
     }
-    pub fn get_id(&self)->&Vec<String>{
+    pub fn get_id(&self) -> &Vec<String> {
         &self.id
     }
-    pub fn get_atr(&self)->&Vec<String>{
+    pub fn get_atr(&self) -> &Vec<String> {
         &self.attribute
     }
-    pub fn get_meth(&self)->&Vec<String>{
+    pub fn get_meth(&self) -> &Vec<String> {
         &self.methoden
     }
 }
@@ -48,9 +49,10 @@ impl Klasse {
 struct Klassendiagramm {
     klassen: Vec<Klasse>
 }
+
 //Standard Konstruktor
-fn build_klasse(id: Vec<String>, attribute: Vec<String>, methoden: Vec<String>)->Klasse{
-    Klasse{x:0,y:0,id,attribute,methoden}
+fn build_klasse(id: Vec<String>, attribute: Vec<String>, methoden: Vec<String>) -> Klasse {
+    Klasse { x: 0, y: 0, id, attribute, methoden }
 }
 
 pub fn sammle_klassen(content: &String) -> Vec<String> {
@@ -131,12 +133,12 @@ pub fn sammle_argumente(content: &String) -> Vec<String> {
     v
 }
 
-pub fn baue_klassen() {
+pub fn baue_klassen(input: &String) {
     let name = String::from("");
     let typ = String::from("");
     let atr: Vec<String> = vec![];
     let meth: Vec<String> = vec![];
-    let v: Vec<String> = sammle_klassen(&readFile()).clone();
+    let v: Vec<String> = sammle_klassen(input).clone();
     let mut klassen: Vec<Klasse> = vec![];
     for klasse in v.iter() {
         let n = sammle_klassen_namen(klasse);
@@ -146,8 +148,8 @@ pub fn baue_klassen() {
         let a: Vec<String> = sammle_argumente(&atribute);
         let methode = sammle_klassen_meth(klasse);
         let m: Vec<String> = sammle_argumente(&methode);
-        let i: Vec<String> = vec!{n,t};
-        let k: Klasse = build_klasse(i,a,m);
+        let i: Vec<String> = vec! {n, t};
+        let k: Klasse = build_klasse(i, a, m);
         let clonek = k.clone();
         klassen.push(clonek);
         let (t1, t2) = (k.get_laenge_breite().0, k.get_laenge_breite().1);
@@ -155,9 +157,4 @@ pub fn baue_klassen() {
     }
 }
 
-pub fn readFile() -> String {
-    let filename = String::from("example.txt");
-    let contents = fs::read_to_string(&filename);
-    let text = contents.unwrap();
-    text
-}
+

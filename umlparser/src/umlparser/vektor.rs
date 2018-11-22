@@ -3,6 +3,7 @@ extern crate regex;
 use std::fs;
 use regex::Regex;
 use crate::umlparser::parser;
+use crate::umlparser::klassendiagramm::klasse;
 
 #[derive(Clone)]
 pub struct Vektor {
@@ -66,7 +67,7 @@ pub fn sammle_vektoren(content: &String) -> Vec<String> {
     parser::parse_text(&content, &re)
 }
 pub fn sammle_startknoten(content: &String) -> String {
-    let re = Regex::new(r".*\((?P<text>.*)/.*\)")
+    let re = Regex::new(r".*\((?P<text>[\w]+)/.*\)")
         .unwrap();
     //Übergebe dem Parser den Text und den Regulären Ausdruck
     let mut v: Vec<String> = parser::parse_text(&content, &re);
@@ -78,7 +79,7 @@ pub fn sammle_startknoten(content: &String) -> String {
     }
 }
 pub fn sammle_endknoten(content: &String) -> String {
-    let re = Regex::new(r".*\(.*/(?P<text>.*)\)")
+    let re = Regex::new(r".*\(.*/(?P<text>[\w]+)\)")
         .unwrap();
     //Übergebe dem Parser den Text und den Regulären Ausdruck
     let mut v: Vec<String> = parser::parse_text(&content, &re);
@@ -126,7 +127,7 @@ pub fn sammle_m2(content: &String) -> String {
     }
 }
 pub fn sammle_beschr(content: &String) -> String {
-    let re = Regex::new(r".*\(.*/.*\).*typ:.*desc:(?P<text>[^;]+)")
+    let re = Regex::new(r".*\(.*/.*\).*typ:.*desc:(?P<text>[^;&&\s]+)")
         .unwrap();
     //Übergebe dem Parser den Text und den Regulären Ausdruck
     let mut v: Vec<String> = parser::parse_text(&content, &re);
@@ -138,7 +139,7 @@ pub fn sammle_beschr(content: &String) -> String {
     }
 }
 
-pub fn baue_vektoren(input: &String){
+pub fn baue_vektoren(input: &String,klassen: &mut Vec<klasse::Klasse>){
     let name = String::from("");
     let typ = String::from("");
     let atr: Vec<String> = vec![];
@@ -154,8 +155,18 @@ pub fn baue_vektoren(input: &String){
         let m2 = sammle_m2(&vektor);temp.push(m2);
         let beschr = sammle_beschr(&vektor);temp.push(beschr);
         if s.chars().count()>0{
-            vektoren.push( build_vektor(s,e,temp));
+            vektoren.push( build_vektor(s.clone(),e.clone(),temp));
             println!("PK: {} ",vektoren.last().unwrap().pk);
+            for klasse in klassen.iter_mut(){
+                if klasse.get_id().first().unwrap()==&s {
+                    klasse.add_ausgehend();
+                    println!("Treffer ausgehend");
+                }
+                if klasse.get_id().first().unwrap()==&e {
+                    klasse.add_eingehend();
+                    println!("Treffer eingehend");
+                }
+            }
         }
 }}
 

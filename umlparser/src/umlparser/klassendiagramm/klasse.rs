@@ -11,7 +11,10 @@ pub struct Klasse {
     id: Vec<String>,
     attribute: Vec<String>,
     methoden: Vec<String>,
-    pk:u32
+    pk:u32 ,
+    //Variable für das Positionieren
+    anzahl_ausgehender :u32 ,
+    anzahl_eigehender :u32
 }
 
 impl Klasse {
@@ -46,6 +49,18 @@ impl Klasse {
     pub fn get_meth(&self) -> &Vec<String> {
         &self.methoden
     }
+    pub fn add_eingehend(&mut self){
+        self.anzahl_eigehender=self.anzahl_eigehender+1;
+    }
+    pub fn add_ausgehend(&mut self){
+        self.anzahl_ausgehender=self.anzahl_ausgehender+1;
+    }
+    pub fn get_eingehend(&self) -> &u32 {
+        &self.anzahl_eigehender
+    }
+    pub fn get_ausgehend(&self) -> &u32 {
+        &self.anzahl_ausgehender
+    }
 }
 
 struct Klassendiagramm {
@@ -55,11 +70,14 @@ struct Klassendiagramm {
 //Standard Konstruktor
 fn build_klasse(id: Vec<String>, attribute: Vec<String>, methoden: Vec<String>) -> Klasse {
     let pk;
+
+    let mut anzahl_eigehender=0;
+    let mut anzahl_ausgehender=0;
     unsafe {
         parser::count_all_objects();
         pk = parser::get_counter();
     }
-    Klasse { x: 0, y: 0, id, attribute, methoden,pk }
+    Klasse { x: 0, y: 0, id, attribute, methoden,pk ,anzahl_ausgehender,anzahl_eigehender}
 }
 
 pub fn sammle_klassen(content: &String) -> Vec<String> {
@@ -129,7 +147,7 @@ pub fn sammle_argumente(content: &String) -> Vec<String> {
     v
 }
 
-pub fn baue_klassen(input: &String) {
+pub fn baue_klassen(input: &String)->Vec<Klasse>{
     let name = String::from("");
     let typ = String::from("");
     let atr: Vec<String> = vec![];
@@ -145,8 +163,7 @@ pub fn baue_klassen(input: &String) {
         let methode = sammle_klassen_meth(klasse);
         let m: Vec<String> = sammle_argumente(&methode);
         if n.chars().count()>0 {
-        let i: Vec<String> = vec! {n, t};
-
+            let i: Vec<String> = vec! {n, t};
             let k: Klasse = build_klasse(i, a, m);
             let clonek = k.clone();
             klassen.push(clonek);
@@ -154,6 +171,7 @@ pub fn baue_klassen(input: &String) {
             println!("Klasse \" {} \" hat Länge: {} und Breite: {}", k.get_id().get(0).unwrap(), t1, t2);
         }
     }
+    klassen
 }
 
 

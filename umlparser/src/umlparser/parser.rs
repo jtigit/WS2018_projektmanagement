@@ -24,8 +24,8 @@ static mut Objectcounter: u32 =0;
     }
 
     pub fn parse_klassendiagramm(input: &String) {
-        klasse::baue_klassen(input,);
-        vektor::baue_vektoren(input);
+        let mut klassen =klasse::baue_klassen(input);
+        vektor::baue_vektoren(input,&mut klassen);
     }
 
     pub fn parse_aktivitaetendiagramm(input: &String) {}

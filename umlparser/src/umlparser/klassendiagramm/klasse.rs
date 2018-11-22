@@ -2,6 +2,7 @@ extern crate regex;
 
 use std::fs;
 use regex::Regex;
+use crate::umlparser::parser;
 
 #[derive(Clone)]
 pub struct Klasse {
@@ -10,6 +11,7 @@ pub struct Klasse {
     id: Vec<String>,
     attribute: Vec<String>,
     methoden: Vec<String>,
+    pk:u32
 }
 
 impl Klasse {
@@ -52,21 +54,26 @@ struct Klassendiagramm {
 
 //Standard Konstruktor
 fn build_klasse(id: Vec<String>, attribute: Vec<String>, methoden: Vec<String>) -> Klasse {
-    Klasse { x: 0, y: 0, id, attribute, methoden }
+    let pk;
+    unsafe {
+        parser::count_all_objects();
+        pk = parser::get_counter();
+    }
+    Klasse { x: 0, y: 0, id, attribute, methoden,pk }
 }
 
 pub fn sammle_klassen(content: &String) -> Vec<String> {
     let re = Regex::new(r"Klasse\{(?P<text>[^\}]+)\}")
         .unwrap();
     //Übergebe dem Parser den Text und den Regulären Ausdruck
-    parse_text(&content, &re)
+    parser::parse_text(&content, &re)
 }
 
 pub fn sammle_klassen_namen(content: &String) -> String {
     let re = Regex::new(r"name:[\W]*(?P<text>[\w]+)[^\w]")
         .unwrap();
     //Übergebe dem Parser den Text und den Regulären Ausdruck
-    let mut v: Vec<String> = parse_text(&content, &re);
+    let mut v: Vec<String> = parser::parse_text(&content, &re);
     if v.len() == 0 {
         return "".to_string();
     } else {
@@ -75,22 +82,11 @@ pub fn sammle_klassen_namen(content: &String) -> String {
     }
 }
 
-pub fn parse_text(text: &String, re: &Regex) -> Vec<String> {
-    let mut v: Vec<String> = vec![];
-
-    for caps in re.captures_iter(&text) {
-        let text = caps.get(1).unwrap().as_str();
-        v.push(text.to_string());
-        println!("Element: {:?}", &caps["text"]);
-    }
-    v
-}
-
 pub fn sammle_klassen_typ(content: &String) -> String {
     let re = Regex::new(r"typ:[\W]*(?P<text>[\w]+)[^\w]")
         .unwrap();
     //Übergebe dem Parser den Text und den Regulären Ausdruck
-    let mut v: Vec<String> = parse_text(&content, &re);
+    let mut v: Vec<String> = parser::parse_text(&content, &re);
     if v.len() == 0 {
         return "".to_string();
     } else {
@@ -103,7 +99,7 @@ pub fn sammle_klassen_atr(content: &String) -> String {
     let re = Regex::new(r"(?s)[-]{2,}[\r\n]{1,}(?P<text>.*)[\r\n]{1,}[-]{2,}")
         .unwrap();
     //Übergebe dem Parser den Text und den Regulären Ausdruck
-    let mut v: Vec<String> = parse_text(&content, &re);
+    let mut v: Vec<String> = parser::parse_text(&content, &re);
     if v.len() == 0 {
         return "".to_string();
     } else {
@@ -116,7 +112,7 @@ pub fn sammle_klassen_meth(content: &String) -> String {
     let re = Regex::new(r"(?s)[-]{2,}[\r\n]{1,}.*[-]{2,}[\r\n]{1,}(?P<text>.*)[\r\n]*")
         .unwrap();
     //Übergebe dem Parser den Text und den Regulären Ausdruck
-    let mut v: Vec<String> = parse_text(&content, &re);
+    let mut v: Vec<String> = parser::parse_text(&content, &re);
     if v.len() == 0 {
         return "".to_string();
     } else {
@@ -129,7 +125,7 @@ pub fn sammle_argumente(content: &String) -> Vec<String> {
     let re = Regex::new(r"(?s)(?P<text>[^\r\n]+)")
         .unwrap();
     //Übergebe dem Parser den Text und den Regulären Ausdruck
-    let mut v: Vec<String> = parse_text(&content, &re);
+    let mut v: Vec<String> = parser::parse_text(&content, &re);
     v
 }
 
@@ -148,12 +144,15 @@ pub fn baue_klassen(input: &String) {
         let a: Vec<String> = sammle_argumente(&atribute);
         let methode = sammle_klassen_meth(klasse);
         let m: Vec<String> = sammle_argumente(&methode);
+        if n.chars().count()>0 {
         let i: Vec<String> = vec! {n, t};
-        let k: Klasse = build_klasse(i, a, m);
-        let clonek = k.clone();
-        klassen.push(clonek);
-        let (t1, t2) = (k.get_laenge_breite().0, k.get_laenge_breite().1);
-        println!("Klasse \" {} \" hat Länge: {} und Breite: {}", k.get_id().get(0).unwrap(), t1, t2);
+
+            let k: Klasse = build_klasse(i, a, m);
+            let clonek = k.clone();
+            klassen.push(clonek);
+            let (t1, t2) = (k.get_laenge_breite().0, k.get_laenge_breite().1);
+            println!("Klasse \" {} \" hat Länge: {} und Breite: {}", k.get_id().get(0).unwrap(), t1, t2);
+        }
     }
 }
 

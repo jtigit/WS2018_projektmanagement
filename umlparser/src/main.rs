@@ -7,7 +7,10 @@ use regex::Regex;
 mod umlparser;
 
 
+
+
 fn main() {
+
     umlparser::parser::starte_umlparser(&readFile());
 }
 

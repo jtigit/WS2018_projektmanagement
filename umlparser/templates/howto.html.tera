@@ -7,37 +7,36 @@
         <ul class="collection">
             <li class="collection-item avatar">
                 <i class="material-icons circle">help</i>
-                <span class="title">Title</span>
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-                </p>
+                <span class="title">Klassendiagramm</span>
+                <p>Ein Klassendiagramm muss mindestens eine Klasse enthalten.Notwendige syntax in <> Klammern .
+                <br> Syntax für ein Klassendiagramm: <br>
+                &ltKlassendiagramm{&gt Hier kommen Klassen und Relationen in gültiger Syntax rein, alles andere wird ignoriert &lt}Klassendiagramm&gt<br>Beispiel<br>
+             Klassendiagramm{<br>   &ltKlasse1&gt &ltKlasse2&gt ignorierter Text kann auch kommentar sein <Relation> <br> }Klassendiagramm
+                 </p>
                 <i class="secondary-content material-icons">code</i>
             </li>
             <li class="collection-item avatar">
                 <i class="material-icons circle green">help</i>
-                <span class="title">Title</span>
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-                </p>
+                <span class="title">Klasse</span>
+                <p></p>
                 <i class="secondary-content material-icons">code</i>
             </li>
             <li class="collection-item avatar">
                 <i class="material-icons circle red">help</i>
-                <span class="title">Title</span>
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-                </p>
+                <span class="title">Relation</span>
+                <p></p>
                     <i class="secondary-content material-icons">code</i>
             </li>
             <li class="collection-item avatar">
                 <i class="material-icons circle">help</i>
                 <span class="title">Title</span>
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-                </p>
+                <p></p>
                 <i class="secondary-content material-icons">code</i>
             </li>
             <li class="collection-item avatar">
                 <i class="material-icons circle green">help</i>
                 <span class="title">Title</span>
-                <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-                </p>
+                <p></p>
                 <i class="secondary-content material-icons">code</i>
             </li>
         </ul>

@@ -4,8 +4,10 @@
 extern crate rocket_contrib;
 extern crate tera;
 
+mod parser;
 mod routes;
 
+use std::fs;
 use rocket_contrib::templates::Template;
 
 fn main() {
@@ -30,4 +32,11 @@ fn start_rocket() {
             ]
         ).attach(Template::fairing()) // Für Templates
         .launch();
+}
+
+pub fn read_file() -> String {
+    let filename = String::from("example.txt");
+    let contents = fs::read_to_string(&filename);
+    let text = contents.unwrap();
+    text
 }

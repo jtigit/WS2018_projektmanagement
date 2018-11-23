@@ -6,6 +6,7 @@ authors = ["jtissen1 <jakob.tissen@fh-bielefeld.de>"]
 [dependencies]
 rocket = "0.4.0-rc.1"
 tera = "0.10"
+regex="1"
 
 [dependencies.rocket_contrib]
 version = "0.4.0-rc.1"

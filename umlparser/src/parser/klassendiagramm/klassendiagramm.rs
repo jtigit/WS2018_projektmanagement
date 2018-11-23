@@ -1,6 +1,5 @@
 extern crate regex;
 
-
 use self::regex::Regex;
 use crate::parser::parser;
 use crate::parser::vektor::Vektor;
@@ -76,7 +75,6 @@ impl Klassendiagramm{
     }
 }
 
-
 //Aus dem Text werden Klassendiagramme gebaut.
 pub fn parse_klassendiagramme(input: &String)->Vec<Klassendiagramm> {
     // Splitte den Text in Teilstücke
@@ -100,8 +98,6 @@ pub fn parse_klassendiagramme(input: &String)->Vec<Klassendiagramm> {
     klassendiagramme
 }
 
-
-
 //Standard Konstruktor
 fn build_klasse(id: Vec<String>, attribute: Vec<String>, methoden: Vec<String>) -> Klasse {
     let pk;
@@ -115,80 +111,49 @@ fn build_klasse(id: Vec<String>, attribute: Vec<String>, methoden: Vec<String>) 
     Klasse { x: 0, y: 0, id, attribute, methoden,pk ,anzahl_ausgehender,anzahl_eigehender}
 }
 
-pub fn sammle_klassen(content: &String) -> Vec<String> {
+ fn sammle_klassen(content: &String) -> Vec<String> {
     let re = Regex::new(r"Klasse\{(?P<text>[^\}]+)}")
         .unwrap();
-    //Übergebe dem Parser den Text und den Regulären Ausdruck
-    parser::parse_text(&content, &re)
+    parser::parse_text_tovector(&content, &re)
 }
-pub fn sammle_klassendiagramme(content: &String) -> Vec<String> {
+ fn sammle_klassendiagramme(content: &String) -> Vec<String> {
     let re = Regex::new(r"(?s)Klassendiagramm\{(?P<text>.*)[}Klassendiagramm]{1}")
         .unwrap();
-    //Übergebe dem Parser den Text und den Regulären Ausdruck
-    parser::parse_text(&content, &re)
+    parser::parse_text_tovector(&content, &re)
 }
 
-pub fn sammle_klassen_namen(content: &String) -> String {
+ fn sammle_klassen_namen(content: &String) -> String {
     let re = Regex::new(r"name:[\W]*(?P<text>[\w]+)[^\w]")
         .unwrap();
-    //Übergebe dem Parser den Text und den Regulären Ausdruck
-    let mut v: Vec<String> = parser::parse_text(&content, &re);
-    if v.len() == 0 {
-        return "".to_string();
-    } else {
-        let k: &str = v.get(0).unwrap();
-        return k.to_string();
-    }
+    parser::parse_text_to_string(&content, &re)
 }
 
-pub fn sammle_klassen_typ(content: &String) -> String {
+ fn sammle_klassen_typ(content: &String) -> String {
     let re = Regex::new(r"typ:[\W]*(?P<text>[\w]+)[^\w]")
         .unwrap();
-    //Übergebe dem Parser den Text und den Regulären Ausdruck
-    let mut v: Vec<String> = parser::parse_text(&content, &re);
-    if v.len() == 0 {
-        return "".to_string();
-    } else {
-        let k: &str = v.get(0).unwrap();
-        return k.to_string();
-    }
+    parser::parse_text_to_string(&content, &re)
 }
 
-pub fn sammle_klassen_atr(content: &String) -> String {
+ fn sammle_klassen_atr(content: &String) -> String {
     let re = Regex::new(r"(?s)[-]{2,}[\r\n]{1,}(?P<text>.*)[\r\n]{1,}[-]{2,}")
         .unwrap();
-    //Übergebe dem Parser den Text und den Regulären Ausdruck
-    let mut v: Vec<String> = parser::parse_text(&content, &re);
-    if v.len() == 0 {
-        return "".to_string();
-    } else {
-        let k: &str = v.get(0).unwrap();
-        return k.to_string();
-    }
+    parser::parse_text_to_string(&content, &re)
 }
 
-pub fn sammle_klassen_meth(content: &String) -> String {
+fn sammle_klassen_meth(content: &String) -> String {
     let re = Regex::new(r"(?s)[-]{2,}[\r\n]{1,}.*[-]{2,}[\r\n]{1,}(?P<text>.*)[\r\n]*")
         .unwrap();
-    //Übergebe dem Parser den Text und den Regulären Ausdruck
-    let mut v: Vec<String> = parser::parse_text(&content, &re);
-    if v.len() == 0 {
-        return "".to_string();
-    } else {
-        let k: &str = v.get(0).unwrap();
-        return k.to_string();
-    }
+    parser::parse_text_to_string(&content, &re)
 }
 
-pub fn sammle_argumente(content: &String) -> Vec<String> {
+ fn sammle_argumente(content: &String) -> Vec<String> {
     let re = Regex::new(r"(?s)(?P<text>[^\r\n]+)")
         .unwrap();
-    //Übergebe dem Parser den Text und den Regulären Ausdruck
-    let mut v: Vec<String> = parser::parse_text(&content, &re);
+    let mut v: Vec<String> = parser::parse_text_tovector(&content, &re);
     v
 }
 
-pub fn baue_klassen(input: &String)->Vec<Klasse>{
+ fn baue_klassen(input: &String)->Vec<Klasse>{
     let name = String::from("");
     let typ = String::from("");
     let atr: Vec<String> = vec![];
@@ -209,10 +174,7 @@ pub fn baue_klassen(input: &String)->Vec<Klasse>{
             let clonek = k.clone();
             klassen.push(clonek);
             let (t1, t2) = (k.get_laenge_breite().0, k.get_laenge_breite().1);
-            println!("Klasse \" {} \" hat Länge: {} und Breite: {}", k.get_id().get(0).unwrap(), t1, t2);
         }
     }
     klassen
 }
-
-

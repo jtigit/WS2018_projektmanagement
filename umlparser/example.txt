@@ -1,0 +1,57 @@
+Klassendiagramm{
+
+Klasse{
+typ: abstract name:parser
+--
++atr 1
+-atr2
+#atr3
++atri4 :int usw
+--
+- methoden
+-semi
+}
+
+Klasse{
+typ:public ;  ;
+---
++atribute
+
+---
+- methoden
+}
+
+V{(start1/ende1) typ: impl ; m1: 0..n ; m2: 3 ;desc: }
+
+Klasse{
+typ:public ; name:parser3
+---
+
++ atribute
+
+---
++ methode
+llll
+}
+
+
+V{ (parser/parser3) typ: ext ; m1: ;desc: gehe zu }
+V{von: A ; zu: B ; typ:  ; m1: 0..n ; m2: 3 ;desc: }
+V{von: A ; zu: B ; typ: impl ; m1: 0..n ; m2: 3 ;desc: }
+V{von: A ; zu: B ; typ: impl ; m1: 0..n ; m2: 3 ;desc: }
+
+}Klassendiagramm
+
+Klassendiagramm{
+Klasse{
+typ:public ; name:parser3
+---
+
++ atribute
+
+---
++ methode
+llll
+}
+V{ (parser/parser3) typ: ext ; m1: ;desc: gehe zu }
+}Klassendiagramm

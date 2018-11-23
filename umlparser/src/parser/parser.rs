@@ -40,13 +40,20 @@ pub fn starte_umlparser(input: &String) {
 pub fn parse_aktivitaetendiagramm(input: &String) {}
 
 
-pub fn parse_text(text: &String, re: &Regex) -> Vec<String> {
+pub fn parse_text_tovector(text: &String, re: &Regex) -> Vec<String> {
     let mut v: Vec<String> = vec![];
-
     for caps in re.captures_iter(&text) {
         let text = caps.get(1).unwrap().as_str();
         v.push(text.to_string());
-        println!("Element: {:?}", &caps["text"]);
     }
     v
+}
+pub fn parse_text_to_string(text: &String, re: &Regex) -> String {
+    let mut v: Vec<String> = parse_text_tovector(&text, &re);
+    if v.len() == 0 {
+        return "".to_string();
+    } else {
+        let k: &str = v.get(0).unwrap();
+        return k.to_string();
+    }
 }

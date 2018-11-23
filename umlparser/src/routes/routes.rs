@@ -1,4 +1,5 @@
 extern crate tera;
+use crate::parser::parser;
 
 use std::path::{Path, PathBuf};
 use std::fs::File;
@@ -52,6 +53,7 @@ pub fn submit_task(eingabe: Form<Eingabe>) -> Flash<Redirect> {
     let x: Eingabe = eingabe.into_inner();
 
     if "send".eq(&x.action) {
+        parser::starte_umlparser(&x.value);
         Flash::success(Redirect::to("/"), &x.value)
     } else if "delete".eq(&x.action) {
         Flash::success(Redirect::to("/"), "")

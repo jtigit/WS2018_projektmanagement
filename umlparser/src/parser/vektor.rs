@@ -62,80 +62,43 @@ impl Vektor {
 pub fn sammle_vektoren(content: &String) -> Vec<String> {
     let re = Regex::new(r"V\{(?P<text>[^\}]+)\}")
         .unwrap();
-    //Übergebe dem Parser den Text und den Regulären Ausdruck
-    parser::parse_text(&content, &re)
+    parser::parse_text_tovector(&content, &re)
 }
 pub fn sammle_startknoten(content: &String) -> String {
     let re = Regex::new(r".*\((?P<text>[\w]+)/.*\)")
         .unwrap();
-    //Übergebe dem Parser den Text und den Regulären Ausdruck
-    let mut v: Vec<String> = parser::parse_text(&content, &re);
-    if v.len() == 0 {
-        return "".to_string();
-    } else {
-        let k: &str = v.get(0).unwrap();
-        return k.to_string();
-    }
+    parser::parse_text_to_string(&content, &re)
+
 }
 pub fn sammle_endknoten(content: &String) -> String {
     let re = Regex::new(r".*\(.*/(?P<text>[\w]+)\)")
         .unwrap();
-    //Übergebe dem Parser den Text und den Regulären Ausdruck
-    let mut v: Vec<String> = parser::parse_text(&content, &re);
-    if v.len() == 0 {
-        return "".to_string();
-    } else {
-        let k: &str = v.get(0).unwrap();
-        return k.to_string();
-    }
+    parser::parse_text_to_string(&content, &re)
+
 }
 pub fn sammle_typ(content: &String) -> String {
     let re = Regex::new(r".*\(.*/.*\).*typ:(?P<text>.?[\w^;]+.?)")
         .unwrap();
-    //Übergebe dem Parser den Text und den Regulären Ausdruck
-    let mut v: Vec<String> = parser::parse_text(&content, &re);
-    if v.len() == 0 {
-        return "".to_string();
-    } else {
-        let k: &str = v.get(0).unwrap();
-        return k.to_string();
-    }
+
+    parser::parse_text_to_string(&content, &re)
+
 }
 pub fn sammle_m1(content: &String) -> String {
     let re = Regex::new(r".*\(.*/.*\).*typ:.*m1:(?P<text>[^;]+)")
         .unwrap();
-    //Übergebe dem Parser den Text und den Regulären Ausdruck
-    let mut v: Vec<String> = parser::parse_text(&content, &re);
-    if v.len() == 0 {
-        return "".to_string();
-    } else {
-        let k: &str = v.get(0).unwrap();
-        return k.to_string();
-    }
+    parser::parse_text_to_string(&content, &re)
+
 }
 pub fn sammle_m2(content: &String) -> String {
     let re = Regex::new(r".*\(.*/.*\).*typ:.*m2:(?P<text>[^;]+)")
         .unwrap();
-    //Übergebe dem Parser den Text und den Regulären Ausdruck
-    let mut v: Vec<String> = parser::parse_text(&content, &re);
-    if v.len() == 0 {
-        return "".to_string();
-    } else {
-        let k: &str = v.get(0).unwrap();
-        return k.to_string();
-    }
+    parser::parse_text_to_string(&content, &re)
+
 }
 pub fn sammle_beschr(content: &String) -> String {
     let re = Regex::new(r".*\(.*/.*\).*typ:.*desc:(?P<text>[^;&&\s]+)")
         .unwrap();
-    //Übergebe dem Parser den Text und den Regulären Ausdruck
-    let mut v: Vec<String> = parser::parse_text(&content, &re);
-    if v.len() == 0 {
-        return "".to_string();
-    } else {
-        let k: &str = v.get(0).unwrap();
-        return k.to_string();
-    }
+    parser::parse_text_to_string(&content, &re)
 }
 
 pub fn baue_vektoren(input: &String,klassen: &mut Vec<klassendiagramm::Klasse>)->Vec<Vektor>{
@@ -155,15 +118,12 @@ pub fn baue_vektoren(input: &String,klassen: &mut Vec<klassendiagramm::Klasse>)-
         let beschr = sammle_beschr(&vektor);temp.push(beschr);
         if s.chars().count()>0{
             vektoren.push( build_vektor(s.clone(),e.clone(),temp));
-            println!("PK: {} ",vektoren.last().unwrap().pk);
             for klasse in klassen.iter_mut(){
                 if klasse.get_id().first().unwrap()==&s {
                     klasse.add_ausgehend();
-                    println!("Treffer ausgehend");
                 }
                 if klasse.get_id().first().unwrap()==&e {
                     klasse.add_eingehend();
-                    println!("Treffer eingehend");
                 }
             }
         }

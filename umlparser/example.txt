@@ -1,4 +1,4 @@
-Klassendiagramm
+Klassendiagramm{
 
 Klasse{
 typ: abstract name:parser
@@ -39,3 +39,19 @@ V{ (parser/parser3) typ: ext ; m1: ;desc: gehe zu }
 V{von: A ; zu: B ; typ:  ; m1: 0..n ; m2: 3 ;desc: }
 V{von: A ; zu: B ; typ: impl ; m1: 0..n ; m2: 3 ;desc: }
 V{von: A ; zu: B ; typ: impl ; m1: 0..n ; m2: 3 ;desc: }
+
+}Klassendiagramm
+
+Klassendiagramm{
+Klasse{
+typ:public ; name:parser3
+---
+
++ atribute
+
+---
++ methode
+llll
+}
+V{ (parser/parser3) typ: ext ; m1: ;desc: gehe zu }
+}Klassendiagramm

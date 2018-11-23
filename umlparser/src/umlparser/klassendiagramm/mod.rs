@@ -1,1 +1,1 @@
-pub mod klasse;
+pub mod klassendiagramm;

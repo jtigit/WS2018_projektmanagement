@@ -1,34 +1,45 @@
 extern crate regex;
 
-use std::fs;
 use regex::Regex;
 //Starte UmL Parser
-
-use crate::umlparser::klassendiagramm::klasse;
+use crate::umlparser::klassendiagramm::klassendiagramm::Klassendiagramm;
+use crate::umlparser::klassendiagramm::klassendiagramm;
 use crate::umlparser::vektor;
 
-static mut Objectcounter: u32 =0;
+static mut OBJECTCOUNTER: u32 = 0;
 
-    pub unsafe fn count_all_objects(){
-        Objectcounter = Objectcounter + 1;
-    }
-    pub unsafe fn get_counter() ->u32{
-        Objectcounter
-    }
-    pub fn starte_umlparser(input: &String) {
-        unsafe {
-            Objectcounter = 0;
-        }
-        parse_klassendiagramm(&input);
-        parse_aktivitaetendiagramm(&input);
-    }
+pub unsafe fn count_all_objects() {
+    OBJECTCOUNTER = OBJECTCOUNTER + 1;
+}
 
-    pub fn parse_klassendiagramm(input: &String) {
-        let mut klassen =klasse::baue_klassen(input);
-        vektor::baue_vektoren(input,&mut klassen);
-    }
+pub unsafe fn get_counter() -> u32 {
+    OBJECTCOUNTER
+}
 
-    pub fn parse_aktivitaetendiagramm(input: &String) {}
+pub fn sammle_alle_diagramme(){
+
+}
+struct Diagramme{
+    klassendiagramme: Vec<Klassendiagramm>
+}
+impl Diagramme{
+    pub fn get_klassendiagramme(&self)->&Vec<Klassendiagramm>{
+        &self.klassendiagramme
+    }
+}
+pub fn starte_umlparser(input: &String) {
+    unsafe {
+        OBJECTCOUNTER = 0;
+    }
+    let klassendiagramme =klassendiagramm::parse_klassendiagramme(&input);
+    let diagramme = Diagramme{klassendiagramme};
+    parse_aktivitaetendiagramm(&input);
+}
+
+
+
+
+pub fn parse_aktivitaetendiagramm(input: &String) {}
 
 
 pub fn parse_text(text: &String, re: &Regex) -> Vec<String> {

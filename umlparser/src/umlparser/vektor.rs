@@ -1,9 +1,8 @@
 extern crate regex;
 
-use std::fs;
 use regex::Regex;
 use crate::umlparser::parser;
-use crate::umlparser::klassendiagramm::klasse;
+use crate::umlparser::klassendiagramm::klassendiagramm;
 
 #[derive(Clone)]
 pub struct Vektor {
@@ -139,7 +138,7 @@ pub fn sammle_beschr(content: &String) -> String {
     }
 }
 
-pub fn baue_vektoren(input: &String,klassen: &mut Vec<klasse::Klasse>){
+pub fn baue_vektoren(input: &String,klassen: &mut Vec<klassendiagramm::Klasse>)->Vec<Vektor>{
     let name = String::from("");
     let typ = String::from("");
     let atr: Vec<String> = vec![];
@@ -168,5 +167,7 @@ pub fn baue_vektoren(input: &String,klassen: &mut Vec<klasse::Klasse>){
                 }
             }
         }
-}}
+}
+    vektoren
+}
 

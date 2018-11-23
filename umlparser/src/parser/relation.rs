@@ -5,7 +5,7 @@ use crate::parser::parser;
 use crate::parser::klassendiagramm::klassendiagramm;
 
 #[derive(Clone)]
-pub struct Vektor {
+pub struct Relation {
     //Können mehrere Punkte sein. erster und letzer sind start und end
     koord: Vec<(u32,u32)>,
     verbindet: (String,String),
@@ -14,7 +14,7 @@ pub struct Vektor {
     pk:u32
 }
 //Standard Konstruktor
-pub fn build_vektor(startknoten: String,endknoten:String,beschreibung:Vec<String>) -> Vektor {
+pub fn build_relation(startknoten: String, endknoten:String, beschreibung:Vec<String>) -> Relation {
     let a:(u32,u32)=(0,0);
     let mut koord:Vec<(u32,u32)> = vec![];
     koord.push(a);koord.push(a);
@@ -23,9 +23,9 @@ pub fn build_vektor(startknoten: String,endknoten:String,beschreibung:Vec<String
         parser::count_all_objects();
         pk = parser::get_counter();
     }
-    Vektor { koord, verbindet : (startknoten,endknoten),beschreibung,pk}
+    Relation { koord, verbindet : (startknoten, endknoten),beschreibung,pk}
 }
-impl Vektor {
+impl Relation {
     pub fn get_x_startknoten(&self) -> &u32 {
         let (x,y) = self.koord.first().unwrap();
         x
@@ -59,7 +59,7 @@ impl Vektor {
     }
 }
 
-pub fn sammle_vektoren(content: &String) -> Vec<String> {
+pub fn sammle_relationen(content: &String) -> Vec<String> {
     let re = Regex::new(r"V\{(?P<text>[^\}]+)\}")
         .unwrap();
     parser::parse_text_tovector(&content, &re)
@@ -101,23 +101,23 @@ pub fn sammle_beschr(content: &String) -> String {
     parser::parse_text_to_string(&content, &re)
 }
 
-pub fn baue_vektoren(input: &String,klassen: &mut Vec<klassendiagramm::Klasse>)->Vec<Vektor>{
+pub fn baue_relationen(input: &String, klassen: &mut Vec<klassendiagramm::Klasse>) ->Vec<Relation>{
     let name = String::from("");
     let typ = String::from("");
     let atr: Vec<String> = vec![];
     let meth: Vec<String> = vec![];
-    let v: Vec<String> = sammle_vektoren(input).clone();
-    let mut vektoren: Vec<Vektor> = vec![];
-    for vektor in v.iter() {
-        let s = sammle_startknoten(&vektor);
-        let e = sammle_endknoten(&vektor);
-        let t = sammle_typ(&vektor);
+    let v: Vec<String> = sammle_relationen(input).clone();
+    let mut relationen: Vec<Relation> = vec![];
+    for relation in v.iter() {
+        let s = sammle_startknoten(&relation);
+        let e = sammle_endknoten(&relation);
+        let t = sammle_typ(&relation);
         let mut temp: Vec<String> = vec![];
-        let m1 = sammle_m1(&vektor);temp.push(m1);
-        let m2 = sammle_m2(&vektor);temp.push(m2);
-        let beschr = sammle_beschr(&vektor);temp.push(beschr);
+        let m1 = sammle_m1(&relation);temp.push(m1);
+        let m2 = sammle_m2(&relation);temp.push(m2);
+        let beschr = sammle_beschr(&relation);temp.push(beschr);
         if s.chars().count()>0{
-            vektoren.push( build_vektor(s.clone(),e.clone(),temp));
+            relationen.push( build_relation(s.clone(), e.clone(), temp));
             for klasse in klassen.iter_mut(){
                 if klasse.get_id().first().unwrap()==&s {
                     klasse.add_ausgehend();
@@ -128,6 +128,6 @@ pub fn baue_vektoren(input: &String,klassen: &mut Vec<klassendiagramm::Klasse>)-
             }
         }
 }
-    vektoren
+    relationen
 }
 

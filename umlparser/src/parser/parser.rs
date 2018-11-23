@@ -2,7 +2,7 @@ extern crate regex;
 //Starte UmL Parser
 use crate::parser::klassendiagramm::klassendiagramm::Klassendiagramm;
 use crate::parser::klassendiagramm::klassendiagramm;
-use crate::parser::vektor;
+use crate::parser::relation;
 use self::regex::Regex;
 static mut OBJECTCOUNTER: u32 = 0;
 

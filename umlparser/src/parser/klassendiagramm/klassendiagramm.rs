@@ -2,8 +2,8 @@ extern crate regex;
 
 use self::regex::Regex;
 use crate::parser::parser;
-use crate::parser::vektor::Vektor;
-use crate::parser::vektor;
+use crate::parser::relation::Relation;
+use crate::parser::relation;
 
 #[derive(Clone)]
 pub struct Klasse {
@@ -64,13 +64,13 @@ impl Klasse {
 }
 pub struct Klassendiagramm {
     klassen: Vec<Klasse>,
-    vektoren: Vec<Vektor>
+    vektoren: Vec<Relation>
 }
 impl Klassendiagramm{
     pub fn get_klassen(&self)->&Vec<Klasse>{
         &self.klassen
     }
-    pub fn get_vektoren(&self)->&Vec<Vektor>{
+    pub fn get_vektoren(&self)->&Vec<Relation>{
         &self.vektoren
     }
 }
@@ -89,7 +89,7 @@ pub fn parse_klassendiagramme(input: &String)->Vec<Klassendiagramm> {
     let mut klassendiagramme: Vec<Klassendiagramm> = vec![];
     for klassendiagramm in v.iter() {
         let mut klassen = baue_klassen(klassendiagramm);
-        let vektoren = vektor::baue_vektoren(klassendiagramm,&mut klassen);
+        let vektoren = relation::baue_relationen(klassendiagramm, &mut klassen);
         if !klassen.is_empty() {
             let a:Klassendiagramm = Klassendiagramm{klassen:klassen,vektoren:vektoren};
             klassendiagramme.push(a);

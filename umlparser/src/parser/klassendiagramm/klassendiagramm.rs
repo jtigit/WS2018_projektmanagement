@@ -4,15 +4,16 @@ use self::regex::Regex;
 use crate::parser::parser;
 use crate::parser::relation::Relation;
 use crate::parser::relation;
+use crate::layout::graphbuilder;
 
 #[derive(Clone)]
 pub struct Klasse {
-    x: u32,
-    y: u32,
+    x: f32,
+    y: f32,
     id: Vec<String>,
     attribute: Vec<String>,
     methoden: Vec<String>,
-    pk:u32 ,
+    pk:usize ,
     //Variable für das Positionieren
     anzahl_ausgehender :u32 ,
     anzahl_eigehender :u32
@@ -61,17 +62,29 @@ impl Klasse {
     pub fn get_ausgehend(&self) -> &u32 {
         &self.anzahl_ausgehender
     }
+    pub fn get_pk(&self)-> &usize {&self.pk}
+    pub fn get_pos_x(&self)-> &f32 {&self.x}
+    pub fn get_pos_y(&self)-> &f32 {&self.y}
+    pub fn set_pk(&mut self,value:usize){
+        self.pk=value;
+    }
+    pub fn set_pos_x(&mut self,value:f32){
+        self.x=value;
+    }
+    pub fn set_pos_y(&mut self,value:f32){
+        self.y=value;
+    }
 }
 pub struct Klassendiagramm {
     klassen: Vec<Klasse>,
-    vektoren: Vec<Relation>
+    relationen: Vec<Relation>
 }
 impl Klassendiagramm{
     pub fn get_klassen(&self)->&Vec<Klasse>{
         &self.klassen
     }
-    pub fn get_vektoren(&self)->&Vec<Relation>{
-        &self.vektoren
+    pub fn get_relationen(&self)->&Vec<Relation>{
+        &self.relationen
     }
 }
 
@@ -89,12 +102,14 @@ pub fn parse_klassendiagramme(input: &String)->Vec<Klassendiagramm> {
     let mut klassendiagramme: Vec<Klassendiagramm> = vec![];
     for klassendiagramm in v.iter() {
         let mut klassen = baue_klassen(klassendiagramm);
-        let vektoren = relation::baue_relationen(klassendiagramm, &mut klassen);
+        let mut relationen = relation::baue_relationen(klassendiagramm, &mut klassen);
         if !klassen.is_empty() {
-            let a:Klassendiagramm = Klassendiagramm{klassen:klassen,vektoren:vektoren};
+            graphbuilder::create_graph(&mut klassen,&mut relationen);
+            let a:Klassendiagramm = Klassendiagramm{klassen:klassen.clone(),relationen:relationen.clone()};
             klassendiagramme.push(a);
         }
     }
+
     klassendiagramme
 }
 
@@ -108,7 +123,7 @@ fn build_klasse(id: Vec<String>, attribute: Vec<String>, methoden: Vec<String>) 
         parser::count_all_objects();
         pk = parser::get_counter();
     }
-    Klasse { x: 0, y: 0, id, attribute, methoden,pk ,anzahl_ausgehender,anzahl_eigehender}
+    Klasse { x: 0.0, y: 0.0, id, attribute, methoden,pk ,anzahl_ausgehender,anzahl_eigehender}
 }
 
  fn sammle_klassen(content: &String) -> Vec<String> {
@@ -162,6 +177,7 @@ fn sammle_klassen_meth(content: &String) -> String {
     let mut klassen: Vec<Klasse> = vec![];
     for klasse in v.iter() {
         let n = sammle_klassen_namen(klasse);
+        println!("Klasse: {}",&n);
         let t = sammle_klassen_typ(klasse);
         let atribute = sammle_klassen_atr(klasse);
         // Trenne Attribute von next line und carriege return
@@ -173,8 +189,10 @@ fn sammle_klassen_meth(content: &String) -> String {
             let k: Klasse = build_klasse(i, a, m);
             let clonek = k.clone();
             klassen.push(clonek);
+
             let (t1, t2) = (k.get_laenge_breite().0, k.get_laenge_breite().1);
         }
+
     }
     klassen
 }

@@ -3,35 +3,37 @@ extern crate regex;
 use crate::parser::klassendiagramm::klassendiagramm::Klassendiagramm;
 use crate::parser::klassendiagramm::klassendiagramm;
 use crate::parser::relation;
+use crate::layout::graphbuilder;
 use self::regex::Regex;
-static mut OBJECTCOUNTER: u32 = 0;
+static mut OBJECTCOUNTER: usize = 0;
 
 pub unsafe fn count_all_objects() {
     OBJECTCOUNTER = OBJECTCOUNTER + 1;
 }
 
-pub unsafe fn get_counter() -> u32 {
+pub unsafe fn get_counter() -> usize {
     OBJECTCOUNTER
 }
 
 pub fn sammle_alle_diagramme(){
 
 }
-struct Diagramme{
+pub struct Diagramme{
     klassendiagramme: Vec<Klassendiagramm>
 }
 impl Diagramme{
-    pub fn get_klassendiagramme(&self)->&Vec<Klassendiagramm>{
-        &self.klassendiagramme
+    pub fn get_klassendiagramme(self)->Vec<Klassendiagramm>{
+        self.klassendiagramme
     }
 }
-pub fn starte_umlparser(input: &String) {
+pub fn starte_umlparser(input: &String)->Diagramme {
     unsafe {
         OBJECTCOUNTER = 0;
     }
     let klassendiagramme =klassendiagramm::parse_klassendiagramme(&input);
-    let diagramme = Diagramme{klassendiagramme};
+    let mut diagramme = Diagramme{klassendiagramme};
     parse_aktivitaetendiagramm(&input);
+    diagramme
 }
 
 

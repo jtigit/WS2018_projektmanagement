@@ -11,7 +11,7 @@ pub struct Relation {
     verbindet: (String,String),
     // Typ , m1,m2
     beschreibung: Vec<String>,
-    pk:u32
+    pk:usize
 }
 //Standard Konstruktor
 pub fn build_relation(startknoten: String, endknoten:String, beschreibung:Vec<String>) -> Relation {
@@ -116,15 +116,22 @@ pub fn baue_relationen(input: &String, klassen: &mut Vec<klassendiagramm::Klasse
         let m1 = sammle_m1(&relation);temp.push(m1);
         let m2 = sammle_m2(&relation);temp.push(m2);
         let beschr = sammle_beschr(&relation);temp.push(beschr);
-        if s.chars().count()>0{
-            relationen.push( build_relation(s.clone(), e.clone(), temp));
+        if s.chars().count()>0 && e.chars().count()>0{
+            //pruefe ob Relation gültig ist.
+            let mut start:bool = false;
+            let mut end:bool = false;
             for klasse in klassen.iter_mut(){
                 if klasse.get_id().first().unwrap()==&s {
                     klasse.add_ausgehend();
+                    start=true;
                 }
                 if klasse.get_id().first().unwrap()==&e {
                     klasse.add_eingehend();
+                    end=true;
                 }
+            }
+            if start && end {
+                relationen.push( build_relation(s.clone(), e.clone(), temp));
             }
         }
 }

@@ -3,14 +3,23 @@
 
 extern crate rocket_contrib;
 extern crate tera;
+extern crate rand;
 
 mod parser;
 mod routes;
+mod layout;
 
 use std::fs;
 use rocket_contrib::templates::Template;
+use crate::parser::klassendiagramm::klassendiagramm::Klassendiagramm;
 
 fn main() {
+    let kdv: Vec<Klassendiagramm> = parser::parser::starte_umlparser(&read_file()).get_klassendiagramme();
+    let kd : &Klassendiagramm = kdv.get(0).unwrap();
+    let k = kd.get_klassen();
+    for klasse in k {
+        println!("Main:::Klassenname:{:?}  Koordinaten({}/{})",klasse.get_id().first(),klasse.get_pos_x(),klasse.get_pos_y());
+    }
     start_rocket();
 }
 

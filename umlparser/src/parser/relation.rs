@@ -27,26 +27,26 @@ pub fn build_relation(startknoten: String, endknoten:String, beschreibung:Vec<St
 }
 impl Relation {
     pub fn get_x_startknoten(&self) -> &u32 {
-        let (x,y) = self.koord.first().unwrap();
+        let (x,_y) = self.koord.first().unwrap();
         x
     }
     pub fn get_y_startknoten(&self) -> &u32 {
-        let (x,y) = self.koord.first().unwrap();
+        let (_x,y) = self.koord.first().unwrap();
         y
     }
     pub fn get_x_endknoten(&self) -> &u32 {
-        let (x,y) = self.koord.last().unwrap();
+        let (x,_y) = self.koord.last().unwrap();
         x
     }
     pub fn get_y_endknoten(&self) -> &u32 {
-        let (x,y) = self.koord.last().unwrap();
+        let (_x,y) = self.koord.last().unwrap();
         y
     }
     pub fn get_name_startknoten(&self) -> &String {
-        let(x,y) = &self.verbindet;&x
+        let(x,_y) = &self.verbindet;&x
     }
     pub fn get_name_endknoten(&self) -> &String {
-        let(x,y) = &self.verbindet;&y
+        let(_x,y) = &self.verbindet;&y
     }
     pub fn get_typ(&self) -> &String {
         &self.beschreibung.first().unwrap()
@@ -102,16 +102,13 @@ pub fn sammle_beschr(content: &String) -> String {
 }
 
 pub fn baue_relationen(input: &String, klassen: &mut Vec<klassendiagramm::Klasse>) ->Vec<Relation>{
-    let name = String::from("");
-    let typ = String::from("");
-    let atr: Vec<String> = vec![];
-    let meth: Vec<String> = vec![];
+
     let v: Vec<String> = sammle_relationen(input).clone();
     let mut relationen: Vec<Relation> = vec![];
     for relation in v.iter() {
         let s = sammle_startknoten(&relation);
         let e = sammle_endknoten(&relation);
-        let t = sammle_typ(&relation);
+        let _t = sammle_typ(&relation);
         let mut temp: Vec<String> = vec![];
         let m1 = sammle_m1(&relation);temp.push(m1);
         let m2 = sammle_m2(&relation);temp.push(m2);

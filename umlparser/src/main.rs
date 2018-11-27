@@ -17,8 +17,12 @@ fn main() {
     let kdv: Vec<Klassendiagramm> = parser::parser::starte_umlparser(&read_file()).get_klassendiagramme();
     let kd : &Klassendiagramm = kdv.get(0).unwrap();
     let k = kd.get_klassen();
+    let r = kd._get_relationen();
     for klasse in k {
         println!("Main:::Klassenname:{:?}  Koordinaten({}/{})",klasse.get_id().first(),klasse.get_pos_x(),klasse.get_pos_y());
+    }
+    for relation in r {
+        println!("Main:::Relation:  typ:{}",relation.get_typ());
     }
     start_rocket();
 }

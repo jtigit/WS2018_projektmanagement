@@ -1,14 +1,11 @@
 extern crate tera;
-use crate::parser::parser;
+
 
 use std::path::{Path, PathBuf};
-use std::fs::File;
-use std::io::Write;
+
 use rocket::response::NamedFile;
-use crate::read_file;
 
 use std::io;
-
 use rocket::request::{Form, FlashMessage};
 use rocket::response::{Flash, Redirect};
 use rocket_contrib::templates::Template;

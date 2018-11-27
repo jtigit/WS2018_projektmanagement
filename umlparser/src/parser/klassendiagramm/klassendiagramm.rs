@@ -22,7 +22,7 @@ impl Klasse {
     pub fn get_laenge_breite(&self) -> (u32, u32) {
         let mut l: u32 = 0;
         let mut b: u32 = 0;
-        let mut temp: u32 = 0;
+        let _temp: u32 = 0;
 
         for arg in &self.id {
             let temp = arg.chars().count() as u32;
@@ -44,10 +44,10 @@ impl Klasse {
     pub fn get_id(&self) -> &Vec<String> {
         &self.id
     }
-    pub fn get_atr(&self) -> &Vec<String> {
+    pub fn _get_atr(&self) -> &Vec<String> {
         &self.attribute
     }
-    pub fn get_meth(&self) -> &Vec<String> {
+    pub fn _get_meth(&self) -> &Vec<String> {
         &self.methoden
     }
     pub fn add_eingehend(&mut self){
@@ -56,10 +56,10 @@ impl Klasse {
     pub fn add_ausgehend(&mut self){
         self.anzahl_ausgehender=self.anzahl_ausgehender+1;
     }
-    pub fn get_eingehend(&self) -> &u32 {
+    pub fn _get_eingehend(&self) -> &u32 {
         &self.anzahl_eigehender
     }
-    pub fn get_ausgehend(&self) -> &u32 {
+    pub fn _get_ausgehend(&self) -> &u32 {
         &self.anzahl_ausgehender
     }
     pub fn get_pk(&self)-> &usize {&self.pk}
@@ -83,7 +83,7 @@ impl Klassendiagramm{
     pub fn get_klassen(&self)->&Vec<Klasse>{
         &self.klassen
     }
-    pub fn get_relationen(&self)->&Vec<Relation>{
+    pub fn _get_relationen(&self)->&Vec<Relation>{
         &self.relationen
     }
 }
@@ -117,8 +117,8 @@ pub fn parse_klassendiagramme(input: &String)->Vec<Klassendiagramm> {
 fn build_klasse(id: Vec<String>, attribute: Vec<String>, methoden: Vec<String>) -> Klasse {
     let pk;
 
-    let mut anzahl_eigehender=0;
-    let mut anzahl_ausgehender=0;
+    let anzahl_eigehender=0;
+    let anzahl_ausgehender=0;
     unsafe {
         parser::count_all_objects();
         pk = parser::get_counter();
@@ -131,7 +131,7 @@ fn build_klasse(id: Vec<String>, attribute: Vec<String>, methoden: Vec<String>) 
         .unwrap();
     parser::parse_text_tovector(&content, &re)
 }
- fn sammle_klassendiagramme(content: &String) -> Vec<String> {
+ fn _sammle_klassendiagramme(content: &String) -> Vec<String> {
     let re = Regex::new(r"(?s)Klassendiagramm\{(?P<text>.*)[}Klassendiagramm]{1}")
         .unwrap();
     parser::parse_text_tovector(&content, &re)
@@ -164,15 +164,15 @@ fn sammle_klassen_meth(content: &String) -> String {
  fn sammle_argumente(content: &String) -> Vec<String> {
     let re = Regex::new(r"(?s)(?P<text>[^\r\n]+)")
         .unwrap();
-    let mut v: Vec<String> = parser::parse_text_tovector(&content, &re);
+    let v: Vec<String> = parser::parse_text_tovector(&content, &re);
     v
 }
 
  fn baue_klassen(input: &String)->Vec<Klasse>{
-    let name = String::from("");
-    let typ = String::from("");
-    let atr: Vec<String> = vec![];
-    let meth: Vec<String> = vec![];
+    let _name = String::from("");
+    let _typ = String::from("");
+    let _atr: Vec<String> = vec![];
+    let _meth: Vec<String> = vec![];
     let v: Vec<String> = sammle_klassen(input).clone();
     let mut klassen: Vec<Klasse> = vec![];
     for klasse in v.iter() {
@@ -190,7 +190,7 @@ fn sammle_klassen_meth(content: &String) -> String {
             let clonek = k.clone();
             klassen.push(clonek);
 
-            let (t1, t2) = (k.get_laenge_breite().0, k.get_laenge_breite().1);
+            let (_t1, _t2) = (k.get_laenge_breite().0, k.get_laenge_breite().1);
         }
 
     }

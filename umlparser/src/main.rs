@@ -42,7 +42,7 @@ fn start_rocket() {
         ).attach(Template::fairing()) // Für Templates
         .launch();
 }
-
+///Liest konkret example.txt ein und gibt den Inhalt des Textes als String zuruck
 pub fn read_file() -> String {
     let filename = String::from("example.txt");
     let contents = fs::read_to_string(&filename);

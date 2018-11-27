@@ -54,13 +54,13 @@ impl Relation {
         &y
     }
     pub fn get_typ(&self) -> &String {
-        &self.beschreibung.first().unwrap()
+        &self.beschreibung.get(0).unwrap()
     }
     pub fn get_beschr_startknoten(&self) -> &String {
         &self.beschreibung.get(1).unwrap()
     }
     pub fn get_beschr_endknoten(&self) -> &String {
-        &self.beschreibung.get(1).unwrap()
+        &self.beschreibung.get(2).unwrap()
     }
 }
 
@@ -87,13 +87,17 @@ pub fn sammle_typ(content: &String) -> String {
         .unwrap();
     let mut value: String;
     let temp:String =  parser::parse_text_to_string(&content, &re);
-    let s = temp.as_str();
+    let re = Regex::new(r"(?P<text>[\w]+)")
+        .unwrap();
+    let temp2:String =  parser::parse_text_to_string(&temp, &re);
+    let s = temp2.as_str();
     match s {
-        "komp" => value =  "Komposition".to_string(),
-        "aggr" => value = "Aggregation".to_string(),
-        "impl" => value = "Implementierung".to_string(),
-        "inher" => value = "Vererbung".to_string(),
-        "abh" => value = "Abhängigkeit".to_string(),
+        "komp" => value =  "Komposition".to_string(),//schwarze raute
+        "aggr" => value = "Aggregation".to_string(), //weiße raute
+        "impl" => value = "Implementierung".to_string(), // gestrichelt weißer ausgefüllter Pfeil
+        "inher" => value = "Vererbung".to_string(),// durchgezogen weißer ausgefüllter Pfeil
+        "abh" => value = "Abhängigkeit".to_string(),// gestrichelter pfeil --->
+        "einfach" => value = "Einfache Abhängigkeit".to_string(), //durchgezogener Pfeil
         _ => value = "Einfache Abhängigkeit".to_string()
     }
     value
@@ -123,8 +127,9 @@ pub fn baue_relationen(input: &String, klassen: &mut Vec<klassendiagramm::Klasse
     for relation in v.iter() {
         let s = sammle_startknoten(&relation);
         let e = sammle_endknoten(&relation);
-        let _t = sammle_typ(&relation);
+        let t = sammle_typ(&relation);
         let mut temp: Vec<String> = vec![];
+        temp.push(t);
         let m1 = sammle_m1(&relation);
         temp.push(m1);
         let m2 = sammle_m2(&relation);

@@ -54,7 +54,7 @@ impl Relation {
         &y
     }
     pub fn get_koord(&self) -> &Vec<(u32, u32)> { &self.koord }
-    pub fn get_typ(&self) -> &String {
+    pub fn get_typ(&self) -> &str {
         &self.beschreibung.get(0).unwrap()
     }
     pub fn get_beschr_startknoten(&self) -> &String {

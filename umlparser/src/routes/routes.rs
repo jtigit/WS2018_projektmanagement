@@ -54,7 +54,7 @@ pub fn index(flash: Option<FlashMessage>) -> Template {
         //context.add("replaceImage", &"http://localhost:8000/static/temp/" + now + ".png");
         context.add("replaceImage", &(format!("http://localhost:8000/static/temp/{:?}.png", now.nsec)));
     } else {
-        context.add("replaceImage", &"https://via.placeholder.com/150");
+        context.add("replaceImage", &"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNgYAAAAAMAASsJTYQAAAAASUVORK5CYII=");
     }
 
     context.add("input_message", &s);

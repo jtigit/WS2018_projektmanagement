@@ -19,7 +19,6 @@ use rocket_contrib::templates::Template;
 use crate::parser::klassendiagramm::klassendiagramm::Klassendiagramm;
 
 fn main() {
-    test();
     start_rocket();
 }
 

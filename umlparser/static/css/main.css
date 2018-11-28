@@ -21,3 +21,7 @@ textarea {
     height: 100%;
     min-height: 100%
 }
+
+#img-bg {
+    background-color: white;
+}

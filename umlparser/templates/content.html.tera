@@ -2,6 +2,14 @@
 
 {% block content %}
 <script type='text/javascript'>
+    function  doDLImg(s) {
+        var a = document.createElement('a');
+        a.href = s;
+        a.download = "uml.png";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a)
+    }
     function doDL(s){
         function dataUrl(data) {
             return "data:x-application/text," + escape(data);
@@ -29,7 +37,7 @@
                     <i class="material-icons right">send</i>
                 </button>
                 <button class="btn waves-effect waves-light right grey" type="button" download="uml.txt" onclick='doDL(document.getElementById("textArea").value)'>
-                    Speichern
+                    Text Speichern
                     <i class="material-icons right grey">save</i>
                 </button>
                 <button class="btn waves-effect waves-light red" name="action" value="delete" type="submit">Löschen
@@ -37,12 +45,19 @@
                 </button>
             </form>
         </div>
-        <div class="col s6">
-            <img class="responsive-img" src={{replaceImage}}>
-            <button class="btn waves-effect waves-light right grey" name="action" value="saveimg" type="submit">
-                Speichern
-                <i class="material-icons right grey">save</i>
-            </button>
+        <div class="col s6 height100">
+            <form id="img-bg" class="height100 z-depth-3" action="/api/submit" method="get">
+                <div class="form-group height100">
+                    <a class="materialboxed" href={{replaceImage}}>
+                        <img id="img" class="responsive-img" src={{replaceImage}}>
+                    </a>
+                </div>
+
+                <button class="btn waves-effect waves-light right grey" type="button" onclick='doDLImg(document.getElementById("img").src)'>
+                    Bild Speichern
+                    <i class="material-icons right grey">save</i>
+                </button>
+            </form>
         </div>
     </div>
 </div>

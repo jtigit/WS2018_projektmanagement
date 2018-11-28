@@ -4,5 +4,5 @@
 *.lock
 *.exe
 *.pdb
-*\target\debug\*
 .idea\
+./target

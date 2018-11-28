@@ -1,7 +1,29 @@
 Klassendiagramm{
 
 Klasse{
-typ: abstract name:parser
+typ: abstract name:p0
+--
++atr 1
+-atr2
+#atr3
++atri4 :int usw
+--
+- methoden
+-semi
+}
+Klasse{
+typ: abstract name:p1
+--
++atr 1
+-atr2
+#atr3
++atri4 :int usw
+--
+- methoden
+-semi
+}
+Klasse{
+typ: abstract name:p2
 --
 +atr 1
 -atr2
@@ -13,7 +35,7 @@ typ: abstract name:parser
 }
 
 Klasse{
-typ:public ;  ;
+typ:public name:p3
 ---
 +atribute
 
@@ -21,7 +43,14 @@ typ:public ;  ;
 - methoden
 }
 
-V{(start1/ende1) typ: impl ; m1: 0..n ; m2: 3 ;desc: }
+V{(p1/p2) typ:impl ; m1: 0..n ; m2: 3 ;desc: }
+V{(p2/p3) typ: komp ; m1: 0..n ; m2: 3 ;desc: }
+V{(p1/p3) typ: aggr ; m1: 0..n ; m2: 3 ;desc: }
+V{(p1/p2) typ:inher ; m1: 0..n ; m2: 3 ;desc: }
+V{(p2/p3) typ: tippfehler ; m1: 0..n ; m2: 3 ;desc: }
+V{(p1/p3) typ: abh ; m1: 0..n ; m2: 3 ;desc: }
+V{(p1/p3) typ: einfach ; m1: 0..n ; m2: 3 ;desc: }
+
 
 Klasse{
 typ:public ; name:parser3
@@ -37,21 +66,7 @@ llll
 
 V{ (parser/parser3) typ: ext ; m1: ;desc: gehe zu }
 V{von: A ; zu: B ; typ:  ; m1: 0..n ; m2: 3 ;desc: }
+V{von: A ; zu: B ; typ:impl ; m1: 0..n ; m2: 3 ;desc: }
 V{von: A ; zu: B ; typ: impl ; m1: 0..n ; m2: 3 ;desc: }
-V{von: A ; zu: B ; typ: impl ; m1: 0..n ; m2: 3 ;desc: }
 
-}Klassendiagramm
-
-Klassendiagramm{
-Klasse{
-typ:public ; name:parser3
----
-
-+ atribute
-
----
-+ methode
-llll
-}
-V{ (parser/parser3) typ: ext ; m1: ;desc: gehe zu }
 }Klassendiagramm

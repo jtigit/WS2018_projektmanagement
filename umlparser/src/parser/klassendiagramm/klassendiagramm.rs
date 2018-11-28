@@ -4,15 +4,16 @@ use self::regex::Regex;
 use crate::parser::parser;
 use crate::parser::relation::Relation;
 use crate::parser::relation;
+use crate::layout::graphbuilder;
 
 #[derive(Clone)]
 pub struct Klasse {
-    x: u32,
-    y: u32,
+    x: f32,
+    y: f32,
     id: Vec<String>,
     attribute: Vec<String>,
     methoden: Vec<String>,
-    pk:u32 ,
+    pk:usize ,
     //Variable für das Positionieren
     anzahl_ausgehender :u32 ,
     anzahl_eigehender :u32
@@ -21,7 +22,7 @@ impl Klasse {
     pub fn get_laenge_breite(&self) -> (u32, u32) {
         let mut l: u32 = 0;
         let mut b: u32 = 0;
-        let mut temp: u32 = 0;
+        let _temp: u32 = 0;
 
         for arg in &self.id {
             let temp = arg.chars().count() as u32;
@@ -40,13 +41,15 @@ impl Klasse {
         }
         (l, b)
     }
+    pub fn get_x(&self) -> &u32 { &self.x }
+    pub fn get_y(&self) -> &u32 { &self.y }
     pub fn get_id(&self) -> &Vec<String> {
         &self.id
     }
-    pub fn get_atr(&self) -> &Vec<String> {
+    pub fn _get_atr(&self) -> &Vec<String> {
         &self.attribute
     }
-    pub fn get_meth(&self) -> &Vec<String> {
+    pub fn _get_meth(&self) -> &Vec<String> {
         &self.methoden
     }
     pub fn add_eingehend(&mut self){
@@ -55,23 +58,35 @@ impl Klasse {
     pub fn add_ausgehend(&mut self){
         self.anzahl_ausgehender=self.anzahl_ausgehender+1;
     }
-    pub fn get_eingehend(&self) -> &u32 {
+    pub fn _get_eingehend(&self) -> &u32 {
         &self.anzahl_eigehender
     }
-    pub fn get_ausgehend(&self) -> &u32 {
+    pub fn _get_ausgehend(&self) -> &u32 {
         &self.anzahl_ausgehender
+    }
+    pub fn get_pk(&self)-> &usize {&self.pk}
+    pub fn get_pos_x(&self)-> &f32 {&self.x}
+    pub fn get_pos_y(&self)-> &f32 {&self.y}
+    pub fn set_pk(&mut self,value:usize){
+        self.pk=value;
+    }
+    pub fn set_pos_x(&mut self,value:f32){
+        self.x=value;
+    }
+    pub fn set_pos_y(&mut self,value:f32){
+        self.y=value;
     }
 }
 pub struct Klassendiagramm {
     klassen: Vec<Klasse>,
-    vektoren: Vec<Relation>
+    relationen: Vec<Relation>
 }
 impl Klassendiagramm{
     pub fn get_klassen(&self)->&Vec<Klasse>{
         &self.klassen
     }
-    pub fn get_vektoren(&self)->&Vec<Relation>{
-        &self.vektoren
+    pub fn _get_relationen(&self)->&Vec<Relation>{
+        &self.relationen
     }
 }
 
@@ -89,12 +104,14 @@ pub fn parse_klassendiagramme(input: &String)->Vec<Klassendiagramm> {
     let mut klassendiagramme: Vec<Klassendiagramm> = vec![];
     for klassendiagramm in v.iter() {
         let mut klassen = baue_klassen(klassendiagramm);
-        let vektoren = relation::baue_relationen(klassendiagramm, &mut klassen);
+        let mut relationen = relation::baue_relationen(klassendiagramm, &mut klassen);
         if !klassen.is_empty() {
-            let a:Klassendiagramm = Klassendiagramm{klassen:klassen,vektoren:vektoren};
+            graphbuilder::create_graph(&mut klassen,&mut relationen);
+            let a:Klassendiagramm = Klassendiagramm{klassen:klassen.clone(),relationen:relationen.clone()};
             klassendiagramme.push(a);
         }
     }
+
     klassendiagramme
 }
 
@@ -102,13 +119,13 @@ pub fn parse_klassendiagramme(input: &String)->Vec<Klassendiagramm> {
 fn build_klasse(id: Vec<String>, attribute: Vec<String>, methoden: Vec<String>) -> Klasse {
     let pk;
 
-    let mut anzahl_eigehender=0;
-    let mut anzahl_ausgehender=0;
+    let anzahl_eigehender=0;
+    let anzahl_ausgehender=0;
     unsafe {
         parser::count_all_objects();
         pk = parser::get_counter();
     }
-    Klasse { x: 0, y: 0, id, attribute, methoden,pk ,anzahl_ausgehender,anzahl_eigehender}
+    Klasse { x: 0.0, y: 0.0, id, attribute, methoden,pk ,anzahl_ausgehender,anzahl_eigehender}
 }
 
  fn sammle_klassen(content: &String) -> Vec<String> {
@@ -116,7 +133,7 @@ fn build_klasse(id: Vec<String>, attribute: Vec<String>, methoden: Vec<String>) 
         .unwrap();
     parser::parse_text_tovector(&content, &re)
 }
- fn sammle_klassendiagramme(content: &String) -> Vec<String> {
+ fn _sammle_klassendiagramme(content: &String) -> Vec<String> {
     let re = Regex::new(r"(?s)Klassendiagramm\{(?P<text>.*)[}Klassendiagramm]{1}")
         .unwrap();
     parser::parse_text_tovector(&content, &re)
@@ -149,19 +166,20 @@ fn sammle_klassen_meth(content: &String) -> String {
  fn sammle_argumente(content: &String) -> Vec<String> {
     let re = Regex::new(r"(?s)(?P<text>[^\r\n]+)")
         .unwrap();
-    let mut v: Vec<String> = parser::parse_text_tovector(&content, &re);
+    let v: Vec<String> = parser::parse_text_tovector(&content, &re);
     v
 }
 
  fn baue_klassen(input: &String)->Vec<Klasse>{
-    let name = String::from("");
-    let typ = String::from("");
-    let atr: Vec<String> = vec![];
-    let meth: Vec<String> = vec![];
+    let _name = String::from("");
+    let _typ = String::from("");
+    let _atr: Vec<String> = vec![];
+    let _meth: Vec<String> = vec![];
     let v: Vec<String> = sammle_klassen(input).clone();
     let mut klassen: Vec<Klasse> = vec![];
     for klasse in v.iter() {
         let n = sammle_klassen_namen(klasse);
+        println!("Klasse: {}",&n);
         let t = sammle_klassen_typ(klasse);
         let atribute = sammle_klassen_atr(klasse);
         // Trenne Attribute von next line und carriege return
@@ -173,8 +191,10 @@ fn sammle_klassen_meth(content: &String) -> String {
             let k: Klasse = build_klasse(i, a, m);
             let clonek = k.clone();
             klassen.push(clonek);
-            let (t1, t2) = (k.get_laenge_breite().0, k.get_laenge_breite().1);
+
+            let (_t1, _t2) = (k.get_laenge_breite().0, k.get_laenge_breite().1);
         }
+
     }
     klassen
 }

@@ -3,14 +3,32 @@
 
 extern crate rocket_contrib;
 extern crate tera;
+extern crate rand;
+
+extern crate image;
+extern crate imageproc;
+extern crate rusttype;
 
 mod parser;
 mod routes;
+mod image_gen;
+mod layout;
 
 use std::fs;
 use rocket_contrib::templates::Template;
+use crate::parser::klassendiagramm::klassendiagramm::Klassendiagramm;
 
 fn main() {
+    let kdv: Vec<Klassendiagramm> = parser::parser::starte_umlparser(&read_file()).get_klassendiagramme();
+    let kd : &Klassendiagramm = kdv.get(0).unwrap();
+    let k = kd.get_klassen();
+    let r = kd._get_relationen();
+    for klasse in k {
+        println!("Main:::Klassenname:{:?}  Koordinaten({}/{})",klasse.get_id().first(),klasse.get_pos_x(),klasse.get_pos_y());
+    }
+    for relation in r {
+        println!("Main:::Relation:  typ:{}",relation.get_typ());
+    }
     start_rocket();
 }
 
@@ -33,7 +51,7 @@ fn start_rocket() {
         ).attach(Template::fairing()) // Für Templates
         .launch();
 }
-
+///Liest konkret example.txt ein und gibt den Inhalt des Textes als String zuruck
 pub fn read_file() -> String {
     let filename = String::from("example.txt");
     let contents = fs::read_to_string(&filename);

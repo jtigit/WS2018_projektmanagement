@@ -73,10 +73,14 @@ impl Klasse {
         self.pk=value;
     }
     pub fn set_pos_x(&mut self,value:f32){
-        self.x=value*1.8;
+        let bildgroesse:f32=1800.0;
+        let rand =bildgroesse*0.1;
+        self.x=value*(bildgroesse-3.0*rand)+rand;
     }
     pub fn set_pos_y(&mut self,value:f32){
-        self.y=value*1.8;
+        let bildgroesse:f32=1800.0;
+        let rand =bildgroesse*0.1;
+        self.y=value*(bildgroesse-4.0*rand)+rand;
     }
 }
 pub struct Klassendiagramm {

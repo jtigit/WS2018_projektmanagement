@@ -190,8 +190,8 @@ pub fn layout_typical_2d<'a, 'b>(l: Option<f32>,
 
     let temp = 0.1f32;
     let dt = temp / (MAX_ITER as f32);
-    let min_pos = P2d(0.1, 0.1);
-    let max_pos = P2d(0.9, 0.9);
+    let min_pos = P2d(0.0, 0.0);
+    let max_pos = P2d(1.0, 1.0);
     let step_fn = |iter| temp - (iter as f32 * dt);
 
     // `l`: ideal length of spring

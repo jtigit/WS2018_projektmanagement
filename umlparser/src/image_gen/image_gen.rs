@@ -12,7 +12,7 @@ use crate::parser::relation::*;
 #[derive(PartialEq,PartialOrd)]
 enum Direction {Up, Right, Down, Left}
 
-static SCALE: f32 = 600.0;
+static SCALE: f32 = 1.0;
 pub fn draw_klassendiagramm(klassendiagramm: &Klassendiagramm) -> ImageBuffer<Rgb<u8>, Vec<u8>> {
     let mut image = RgbImage::new(1800, 1800);
     let (witdth, height) = image.dimensions();

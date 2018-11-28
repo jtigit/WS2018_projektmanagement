@@ -30,8 +30,12 @@ pub fn draw_klassendiagramm(klassendiagramm: &Klassendiagramm) -> ImageBuffer<Rg
 
 fn draw_klasse(klasse: &Klasse, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
 
-    let font = Vec::from(include_bytes!("DejaVuSans.ttf") as &[u8]);
-    let font = FontCollection::from_bytes(font).unwrap().into_font().unwrap();
+    let font_normal = FontCollection::from_bytes(Vec::from(include_bytes!("VeraMono.ttf") as &[u8]))
+        .unwrap().into_font().unwrap();
+    let font_bold = FontCollection::from_bytes(Vec::from(include_bytes!("VeraMono-Bold.ttf") as &[u8]))
+        .unwrap().into_font().unwrap();
+    let font_italic = FontCollection::from_bytes(Vec::from(include_bytes!("VeraMono-Italic.ttf") as &[u8]))
+        .unwrap().into_font().unwrap();
     let scale= 30.0;
     let font_scale = Scale { x: scale, y: scale };
 
@@ -59,11 +63,11 @@ fn draw_klasse(klasse: &Klasse, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
         //Zeichne Klassentyp  bsp abstract interface etc
         if i ==0 {
             draw_text_mut(image, color_black, text_x as u32 +d1,
-                          text_y as u32, font_scale, &font, &klasse.get_id()[1]);
+                          text_y as u32, font_scale, &font_italic, &klasse.get_id()[1]);
         }else if i == 1{
-            draw_text_mut(image, color_black, text_x as u32+d0, text_y as u32, font_scale, &font, &klasse.get_id()[0]);
+            draw_text_mut(image, color_black, text_x as u32+d0, text_y as u32, font_scale, &font_bold, &klasse.get_id()[0]);
         }else{
-            draw_text_mut(image, color_black, text_x as u32, text_y as u32, font_scale, &font, &klasse.get_id()[i]);
+            draw_text_mut(image, color_black, text_x as u32, text_y as u32, font_scale, &font_normal, &klasse.get_id()[i]);
         }
         text_y += text_height;
     }
@@ -73,7 +77,7 @@ fn draw_klasse(klasse: &Klasse, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
 
     // Klasse.attribute
     for i in 0..(klasse._get_atr().len()) {
-        draw_text_mut(image, color_black, text_x as u32, text_y as u32, font_scale, &font, &klasse._get_atr()[i]);
+        draw_text_mut(image, color_black, text_x as u32, text_y as u32, font_scale, &font_normal, &klasse._get_atr()[i]);
         text_y += text_height;
     }
     rect_y += (rect_height - 1) as f32;
@@ -83,7 +87,7 @@ fn draw_klasse(klasse: &Klasse, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
 
     // Klasse.methoden
     for i in 0..klasse._get_meth().len() {
-        draw_text_mut(image, color_black, text_x as u32, text_y as u32, font_scale, &font, &klasse._get_meth()[i]);
+        draw_text_mut(image, color_black, text_x as u32, text_y as u32, font_scale, &font_normal, &klasse._get_meth()[i]);
         text_y += text_height;
     }
     rect_y += (rect_height - 1) as f32;

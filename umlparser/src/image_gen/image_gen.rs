@@ -20,8 +20,8 @@ pub fn draw_klassendiagramm(klassendiagramm: Klassendiagramm) -> ImageBuffer<Rgb
     for i in 0..klassendiagramm.get_klassen().len() {
         draw_klasse(&klassendiagramm.get_klassen()[i], &mut image);
     }
-    for i in 0..klassendiagramm.get_vektoren().len() {
-        draw_relation(&klassendiagramm.get_vektoren()[i], &mut image);
+    for i in 0..klassendiagramm._get_relationen().len() {
+        draw_relation(&klassendiagramm._get_relationen()[i], &mut image);
     }
 
     image.save("image.png").unwrap();
@@ -37,40 +37,40 @@ fn draw_klasse(klasse: &Klasse, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
 
     let color_black = Rgb([0x00, 0x00, 0x00]);
     let text_height = scale;
-    let text_x = klasse.get_x() + 2;
-    let mut text_y = klasse.get_y() + 2;
+    let text_x = klasse.get_x() + 2.0;
+    let mut text_y = klasse.get_y() + 2.0;
 
-    let rect_x = klasse.get_x() + 0 ;
-    let mut rect_y = klasse.get_y() + 0;
+    let rect_x = klasse.get_x() + 0.0;
+    let mut rect_y = klasse.get_y() + 0.0;
     let rect_width = rect_width(klasse);
     let mut rect_height;
 
     // Klasse.id
     for i in 0..klasse.get_id().len() {
-        draw_text_mut(image, color_black, text_x, text_y, font_scale, &font, &klasse.get_id()[i]);
-        text_y += text_height as u32;
+        draw_text_mut(image, color_black, text_x as u32, text_y as u32, font_scale, &font, &klasse.get_id()[i]);
+        text_y += text_height;
     }
     rect_height = klasse.get_id().len() as u32 * scale as u32 + (scale / 2.0) as u32;
     draw_hollow_rect_mut(image, Rect::at(rect_x as i32, rect_y as i32).of_size(rect_width, rect_height), color_black);
-    text_y += (text_height / 2.0) as u32;
+    text_y += text_height / 2.0;
 
     // Klasse.attribute
-    for i in 0..(klasse.get_atr().len()) {
-        draw_text_mut(image, color_black, text_x, text_y, font_scale, &font, &klasse.get_atr()[i]);
-        text_y += text_height as u32;
+    for i in 0..(klasse._get_atr().len()) {
+        draw_text_mut(image, color_black, text_x as u32, text_y as u32, font_scale, &font, &klasse._get_atr()[i]);
+        text_y += text_height;
     }
-    rect_y += rect_height as u32 - 1;
-    rect_height = klasse.get_atr().len() as u32 * scale as u32 + (scale / 2.0) as u32;
+    rect_y += (rect_height - 1) as f32;
+    rect_height = klasse._get_atr().len() as u32 * scale as u32 + (scale / 2.0) as u32;
     draw_hollow_rect_mut(image, Rect::at(rect_x as i32, rect_y as i32).of_size(rect_width, rect_height), color_black);
-    text_y += (text_height / 2.0) as u32;
+    text_y += text_height / 2.0;
 
     // Klasse.methoden
-    for i in 0..klasse.get_meth().len() {
-        draw_text_mut(image, color_black, text_x, text_y, font_scale, &font, &klasse.get_meth()[i]);
-        text_y += text_height as u32;
+    for i in 0..klasse._get_meth().len() {
+        draw_text_mut(image, color_black, text_x as u32, text_y as u32, font_scale, &font, &klasse._get_meth()[i]);
+        text_y += text_height;
     }
-    rect_y += rect_height - 1;
-    rect_height = klasse.get_meth().len() as u32 * scale as u32 + (scale / 2.0) as u32;
+    rect_y += (rect_height - 1) as f32;
+    rect_height = klasse._get_meth().len() as u32 * scale as u32 + (scale / 2.0) as u32;
     draw_hollow_rect_mut(image, Rect::at(rect_x as i32, rect_y as i32).of_size(rect_width, rect_height), color_black);
 }
 
@@ -195,14 +195,14 @@ fn rect_width(klasse: &Klasse) -> u32 {
             max_width = klasse.get_id()[i].len();
         }
     }
-    for i in 0..(klasse.get_atr().len()) {
-        if klasse.get_atr()[i].len() > max_width {
-            max_width = klasse.get_atr()[i].len();
+    for i in 0..(klasse._get_atr().len()) {
+        if klasse._get_atr()[i].len() > max_width {
+            max_width = klasse._get_atr()[i].len();
         }
     }
-    for i in 0..(klasse.get_meth().len()) {
-        if klasse.get_meth()[i].len() > max_width {
-            max_width = klasse.get_meth()[i].len();
+    for i in 0..(klasse._get_meth().len()) {
+        if klasse._get_meth()[i].len() > max_width {
+            max_width = klasse._get_meth()[i].len();
         }
     }
     return (max_width * 17) as u32;

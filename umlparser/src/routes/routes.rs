@@ -1,13 +1,11 @@
 extern crate tera;
-use crate::parser::parser;
+
 
 use std::path::{Path, PathBuf};
-use std::fs::File;
-use std::io::Write;
+
 use rocket::response::NamedFile;
 
 use std::io;
-
 use rocket::request::{Form, FlashMessage};
 use rocket::response::{Flash, Redirect};
 use rocket_contrib::templates::Template;
@@ -53,7 +51,6 @@ pub fn submit_task(eingabe: Form<Eingabe>) -> Flash<Redirect> {
     let x: Eingabe = eingabe.into_inner();
 
     if "send".eq(&x.action) {
-        parser::starte_umlparser(&x.value);
         Flash::success(Redirect::to("/"), &x.value)
     } else if "delete".eq(&x.action) {
         Flash::success(Redirect::to("/"), "")

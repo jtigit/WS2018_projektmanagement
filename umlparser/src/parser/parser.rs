@@ -2,44 +2,39 @@ extern crate regex;
 //Starte UmL Parser
 use crate::parser::klassendiagramm::klassendiagramm::Klassendiagramm;
 use crate::parser::klassendiagramm::klassendiagramm;
-use crate::parser::relation;
-use self::regex::Regex;
-static mut OBJECTCOUNTER: u32 = 0;
 
+use self::regex::Regex;
+static mut OBJECTCOUNTER: usize = 0;
+///inkrementiert den Zähler
 pub unsafe fn count_all_objects() {
     OBJECTCOUNTER = OBJECTCOUNTER + 1;
 }
-
-pub unsafe fn get_counter() -> u32 {
+///Zählt die Anzahl aller sichtbar erzeugten Objekte im Uml Diagramm
+pub unsafe fn get_counter() -> usize {
     OBJECTCOUNTER
 }
 
-pub fn sammle_alle_diagramme(){
-
-}
-struct Diagramme{
+///Hält alle Klassendiagramme
+pub struct Diagramme{
     klassendiagramme: Vec<Klassendiagramm>
 }
 impl Diagramme{
-    pub fn get_klassendiagramme(&self)->&Vec<Klassendiagramm>{
-        &self.klassendiagramme
+    ///gibt einen Vektor aller Klassendiagramme zurück
+    pub fn get_klassendiagramme(self)->Vec<Klassendiagramm>{
+        self.klassendiagramme
     }
 }
-pub fn starte_umlparser(input: &String) {
+///startet die Oberste Ebene des Parsers und ruft alle drunter liegenden Parser Methoden auf.
+pub fn starte_umlparser(input: &String)->Diagramme {
     unsafe {
         OBJECTCOUNTER = 0;
     }
     let klassendiagramme =klassendiagramm::parse_klassendiagramme(&input);
     let diagramme = Diagramme{klassendiagramme};
-    parse_aktivitaetendiagramm(&input);
+    diagramme
 }
 
-
-
-
-pub fn parse_aktivitaetendiagramm(input: &String) {}
-
-
+///Untersucht den Text mittels regulären Ausdruck und liefert die Ergebnisse in einem Vektor zurück
 pub fn parse_text_tovector(text: &String, re: &Regex) -> Vec<String> {
     let mut v: Vec<String> = vec![];
     for caps in re.captures_iter(&text) {
@@ -48,8 +43,9 @@ pub fn parse_text_tovector(text: &String, re: &Regex) -> Vec<String> {
     }
     v
 }
+///Untersucht den Text mittels regulären Ausdruck und liefert die Ergebnisse in einem String
 pub fn parse_text_to_string(text: &String, re: &Regex) -> String {
-    let mut v: Vec<String> = parse_text_tovector(&text, &re);
+    let v: Vec<String> = parse_text_tovector(&text, &re);
     if v.len() == 0 {
         return "".to_string();
     } else {

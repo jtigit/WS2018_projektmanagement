@@ -6,7 +6,8 @@ authors = ["jtissen1 <jakob.tissen@fh-bielefeld.de>"]
 [dependencies]
 rocket = "0.4.0-rc.1"
 tera = "0.10"
-regex = "1"
+regex="1"
+rand = "0.3"
 image = "0.20.1"
 imageproc = "0.17.0"
 rusttype = "0.7.3"

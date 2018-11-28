@@ -44,10 +44,27 @@ fn draw_klasse(klasse: &Klasse, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
     let mut rect_y = klasse.get_y() * SCALE + 0.0;
     let rect_width = rect_width(klasse);
     let mut rect_height;
+    //Text Zentrierung
+    let ch_len0 = klasse.get_id()[0].chars().count() as f32 *(-6.0);
+    let ch_len1 = klasse.get_id()[1].chars().count() as f32 *(-6.0);
+    let rect_len =(rect_width/2) as f32;
+    let d0 =(rect_len +(ch_len0 ))as u32;
+    let d1 =(rect_len +(ch_len1 ))as u32;
+    println!("d0:{}",rect_len);
+    println!("d1:{}",d1);
+
 
     // Klasse.id
     for i in 0..klasse.get_id().len() {
-        draw_text_mut(image, color_black, text_x as u32, text_y as u32, font_scale, &font, &klasse.get_id()[i]);
+        //Zeichne Klassentyp  bsp abstract interface etc
+        if i ==0 {
+            draw_text_mut(image, color_black, text_x as u32 +d1,
+                          text_y as u32, font_scale, &font, &klasse.get_id()[1]);
+        }else if i == 1{
+            draw_text_mut(image, color_black, text_x as u32+d0, text_y as u32, font_scale, &font, &klasse.get_id()[0]);
+        }else{
+            draw_text_mut(image, color_black, text_x as u32, text_y as u32, font_scale, &font, &klasse.get_id()[i]);
+        }
         text_y += text_height;
     }
     rect_height = klasse.get_id().len() as u32 * scale as u32 + (scale / 2.0) as u32;

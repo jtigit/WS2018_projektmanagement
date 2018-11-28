@@ -158,7 +158,20 @@ fn build_klasse(id: Vec<String>, attribute: Vec<String>, methoden: Vec<String>) 
  fn sammle_klassen_typ(content: &String) -> String {
     let re = Regex::new(r"typ:[\W]*(?P<text>[\w]+)[^\w]")
         .unwrap();
-    parser::parse_text_to_string(&content, &re)
+     let mut value: String;
+     let temp:String =  parser::parse_text_to_string(&content, &re);
+     let re = Regex::new(r"(?P<text>[\w]+)")
+         .unwrap();
+     let temp2:String =  parser::parse_text_to_string(&temp, &re);
+     let s = temp2.as_str();
+     match s {
+         "interface" => value =  "<<interface>>".to_string(),
+         "JavaBean" => value = ">>javaBean>>".to_string(),
+         "Message" => value = "<<Message>>".to_string(),
+         "abstract" => value = "<<abstract>>".to_string(),
+         _ => value = "".to_string()
+     }
+     value
 }
 
  fn sammle_klassen_atr(content: &String) -> String {

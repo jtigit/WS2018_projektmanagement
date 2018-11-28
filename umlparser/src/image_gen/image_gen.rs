@@ -36,7 +36,7 @@ fn draw_klasse(klasse: &Klasse, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
         .unwrap().into_font().unwrap();
     let font_italic = FontCollection::from_bytes(Vec::from(include_bytes!("VeraMono-Italic.ttf") as &[u8]))
         .unwrap().into_font().unwrap();
-    let scale= 30.0;
+    let scale= 40.0;
     let font_scale = Scale { x: scale, y: scale };
 
     let color_black = Rgb([0x00, 0x00, 0x00]);
@@ -48,9 +48,10 @@ fn draw_klasse(klasse: &Klasse, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
     let mut rect_y = klasse.get_y() * SCALE + 0.0;
     let rect_width = rect_width(klasse);
     let mut rect_height;
+
     //Text Zentrierung
-    let ch_len0 = klasse.get_id()[0].chars().count() as f32 *(-6.0);
-    let ch_len1 = klasse.get_id()[1].chars().count() as f32 *(-6.0);
+    let ch_len0 = klasse.get_id()[0].chars().count() as f32 *(-10.0);
+    let ch_len1 = klasse.get_id()[1].chars().count() as f32 *(-10.0);
     let rect_len =(rect_width/2) as f32;
     let d0 =(rect_len +(ch_len0 ))as u32;
     let d1 =(rect_len +(ch_len1 ))as u32;
@@ -273,5 +274,5 @@ fn rect_width(klasse: &Klasse) -> u32 {
             max_width = klasse._get_meth()[i].len();
         }
     }
-    return (max_width * 17) as u32;
+    return (max_width * 25) as u32;
 }

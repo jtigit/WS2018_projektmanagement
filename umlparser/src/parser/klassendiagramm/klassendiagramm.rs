@@ -5,6 +5,8 @@ use crate::parser::parser;
 use crate::parser::relation::Relation;
 use crate::parser::relation;
 use crate::layout::graphbuilder;
+use crate::image_gen::image_gen;
+use image::{Rgb, RgbImage, ImageBuffer};
 
 #[derive(Clone)]
 pub struct Klasse {
@@ -87,6 +89,10 @@ impl Klassendiagramm{
     }
     pub fn _get_relationen(&self)->&Vec<Relation>{
         &self.relationen
+    }
+
+    pub fn get_image(&self) -> ImageBuffer<Rgb<u8>, Vec<u8>> {
+        image_gen::draw_klassendiagramm(&self)
     }
 }
 

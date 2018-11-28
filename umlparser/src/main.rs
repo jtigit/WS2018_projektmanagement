@@ -19,6 +19,11 @@ use rocket_contrib::templates::Template;
 use crate::parser::klassendiagramm::klassendiagramm::Klassendiagramm;
 
 fn main() {
+    test();
+    start_rocket();
+}
+
+fn test() {
     let kdv: Vec<Klassendiagramm> = parser::parser::starte_umlparser(&read_file()).get_klassendiagramme();
     let kd : &Klassendiagramm = kdv.get(0).unwrap();
     let k = kd.get_klassen();
@@ -29,7 +34,6 @@ fn main() {
     for relation in r {
         println!("Main:::Relation:  typ:{}",relation.get_typ());
     }
-    start_rocket();
 }
 
 fn start_rocket() {

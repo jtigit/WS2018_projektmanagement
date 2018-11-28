@@ -1,7 +1,9 @@
 extern crate tera;
-
+extern crate time;
 
 use std::path::{Path, PathBuf};
+use std::option::Option;
+use std::time::{SystemTime, UNIX_EPOCH, Duration};
 
 use rocket::response::NamedFile;
 
@@ -10,6 +12,9 @@ use rocket::request::{Form, FlashMessage};
 use rocket::response::{Flash, Redirect};
 use rocket_contrib::templates::Template;
 use tera::Context;
+
+use crate::parser::parser;
+use crate::parser::klassendiagramm::klassendiagramm::Klassendiagramm;
 
 #[derive(FromForm)]
 pub struct Eingabe {
@@ -29,8 +34,31 @@ pub fn index(flash: Option<FlashMessage>) -> Template {
 
     let s = flash.map(|msg| format!("{}", msg.msg())).unwrap_or_else(|| "abc -> def".to_string());
 
+    let kdv: Vec<Klassendiagramm> = parser::starte_umlparser(&s).get_klassendiagramme();
+
+    if kdv.get(0).is_some() {
+        let kd : &Klassendiagramm = kdv.get(0).unwrap();
+        let k = kd.get_klassen();
+        let r = kd._get_relationen();
+        for klasse in k {
+            println!("Main:::Klassenname:{:?}  Koordinaten({}/{})",klasse.get_id().first(),klasse.get_pos_x(),klasse.get_pos_y());
+        }
+        for relation in r {
+            println!("Main:::Relation:  typ:{}",relation.get_typ());
+        }
+
+        let now = time::get_time();
+
+        kd.get_image().save(format!("static/temp/{:?}.png", now.nsec)).unwrap();
+
+        //context.add("replaceImage", &"http://localhost:8000/static/temp/" + now + ".png");
+        context.add("replaceImage", &(format!("http://localhost:8000/static/temp/{:?}.png", now.nsec)));
+    } else {
+        context.add("replaceImage", &"https://via.placeholder.com/150");
+    }
+
     context.add("input_message", &s);
-    context.add("replaceImage", &"https://via.placeholder.com/800x800");
+
     Template::render("content", &context)
 }
 

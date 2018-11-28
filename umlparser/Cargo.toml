@@ -11,6 +11,7 @@ rand = "0.3"
 image = "0.20.1"
 imageproc = "0.17.0"
 rusttype = "0.7.3"
+time = "0.1"
 
 [dependencies.rocket_contrib]
 version = "0.4.0-rc.1"

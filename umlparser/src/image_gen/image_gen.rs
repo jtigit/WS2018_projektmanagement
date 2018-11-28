@@ -13,8 +13,7 @@ use crate::parser::relation::*;
 enum Direction {Up, Right, Down, Left}
 
 static SCALE: f32 = 800.0;
-
-pub fn draw_klassendiagramm(klassendiagramm: Klassendiagramm) -> ImageBuffer<Rgb<u8>, Vec<u8>> {
+pub fn draw_klassendiagramm(klassendiagramm: &Klassendiagramm) -> ImageBuffer<Rgb<u8>, Vec<u8>> {
     let mut image = RgbImage::new(800, 800);
     let (witdth, height) = image.dimensions();
     draw_filled_rect_mut(&mut image, Rect::at(0, 0).of_size(witdth, height), Rgb([0xFF, 0xFF, 0xFF]));
@@ -26,7 +25,6 @@ pub fn draw_klassendiagramm(klassendiagramm: Klassendiagramm) -> ImageBuffer<Rgb
         draw_relation(&klassendiagramm._get_relationen()[i], &mut image);
     }
 
-    image.save("image.png").unwrap();
     return image;
 }
 

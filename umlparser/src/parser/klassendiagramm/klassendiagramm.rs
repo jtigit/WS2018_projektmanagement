@@ -73,10 +73,10 @@ impl Klasse {
         self.pk=value;
     }
     pub fn set_pos_x(&mut self,value:f32){
-        self.x=value;
+        self.x=value*1.8;
     }
     pub fn set_pos_y(&mut self,value:f32){
-        self.y=value;
+        self.y=value*1.8;
     }
 }
 pub struct Klassendiagramm {

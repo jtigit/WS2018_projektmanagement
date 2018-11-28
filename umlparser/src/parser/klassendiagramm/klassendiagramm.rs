@@ -40,6 +40,8 @@ impl Klasse {
         }
         (l, b)
     }
+    pub fn get_x(&self) -> &u32 { &self.x }
+    pub fn get_y(&self) -> &u32 { &self.y }
     pub fn get_id(&self) -> &Vec<String> {
         &self.id
     }

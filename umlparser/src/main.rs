@@ -4,8 +4,13 @@
 extern crate rocket_contrib;
 extern crate tera;
 
+extern crate image;
+extern crate imageproc;
+extern crate rusttype;
+
 mod parser;
 mod routes;
+mod image_gen;
 
 use std::fs;
 use rocket_contrib::templates::Template;

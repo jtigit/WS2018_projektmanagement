@@ -12,6 +12,8 @@ use crate::parser::relation::*;
 #[derive(PartialEq,PartialOrd)]
 enum Direction {Up, Right, Down, Left}
 
+static SCALE: f32 = 800.0;
+
 pub fn draw_klassendiagramm(klassendiagramm: Klassendiagramm) -> ImageBuffer<Rgb<u8>, Vec<u8>> {
     let mut image = RgbImage::new(800, 800);
     let (witdth, height) = image.dimensions();
@@ -78,61 +80,113 @@ fn draw_relation(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>)
     let color_black = Rgb([0x00, 0x00, 0x00]);
     let color_white =  Rgb([0xFF, 0xFF, 0xFF]);
     for i in 0..relation.get_koord().len() - 1 {
-        let mut start = (relation.get_koord()[i].0 as f32, relation.get_koord()[i].1 as f32);
-        let mut end = (relation.get_koord()[i + 1].0 as f32, relation.get_koord()[i + 1].1 as f32);
-        draw_line_segment_mut(image, start, end, color_black);
+        let mut start = (relation.get_koord()[i].0 as f32 * SCALE, relation.get_koord()[i].1 as f32 * SCALE);
+        let mut end = (relation.get_koord()[i + 1].0 as f32 * SCALE, relation.get_koord()[i + 1].1 as f32 * SCALE);
+        if relation.get_typ() == "Implementierung" || relation.get_typ() == "Abhängigkeit" {
+            draw_dashed_line(image, start, end, color_black);
+        } else {
+            draw_line_segment_mut(image, start, end, color_black);
+        }
     }
-        draw_inher(&relation, image);
+    match relation.get_typ() {
+        "Komposition" => draw_komp(relation, image),
+        "Aggregation" => draw_aggr(relation, image),
+        "Implementierung" => draw_inher(relation, image),
+        "Vererbung" => draw_inher(relation, image),
+        _ => draw_einfach(relation, image)
+    }
+}
+
+fn draw_dashed_line(image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>, start: (f32, f32), end: (f32, f32), color: Rgb<u8>) {
+    let dir = get_dir(start.0, start.1, end.0, end.1);
+    let mut start_tmp = start;
+    let mut add = (0.0, 0.0);
+    let mut end_tmp = start_tmp;
+    if dir == Direction::Up {
+        add.1 = 10.0;
+        end_tmp.1 += 5.0;
+    } else if dir == Direction::Right {
+        add.0 = 10.0;
+        end_tmp.0 += 5.0;
+    } else if dir == Direction::Down {
+        add.1 = -10.0;
+        end_tmp.1 += -5.0;
+    } else {
+        add.0 = -10.0;
+        end_tmp.0 += -5.0;
+    }
+    while start_tmp < end {
+        draw_line_segment_mut(image, start_tmp, end_tmp, color);
+        start_tmp.0 += add.0;
+        start_tmp.1 += add.1;
+        end_tmp.0 += add.0;
+        end_tmp.1 += add.1;
+    }
 }
 
 fn draw_aggr(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
     let color_black = Rgb([0x00, 0x00, 0x00]);
+    let mut start_point = (relation.get_koord()[0].0 as i32 * SCALE as i32, relation.get_koord()[0].1 as i32 * SCALE as i32);
     let point: &[Point<i32>] = &[
-        Point::new(relation.get_koord()[0].0 as i32, relation.get_koord()[0].1 as i32),
-        Point::new(relation.get_koord()[0].0 as i32 + 10, relation.get_koord()[0].1 as i32 + 10),
-        Point::new(relation.get_koord()[0].0 as i32, relation.get_koord()[0].1 as i32 + 20),
-        Point::new(relation.get_koord()[0].0 as i32 - 10, relation.get_koord()[0].1 as i32 + 10)
+        Point::new(start_point.0, start_point.1),
+        Point::new(start_point.0 + 10, start_point.1 + 10),
+        Point::new(start_point.0, start_point.1 + 20),
+        Point::new(start_point.0 - 10, start_point.1 + 10)
     ];
+    if get_start_dir(relation) == Direction::Up {
+        //start_point = (start_point.0 + 20, start_point.1);
+    } else if get_start_dir(relation) == Direction::Right {
+        start_point = (start_point.0 - 10, start_point.1 - 10);
+    } else if get_start_dir(relation) == Direction::Down {
+        start_point = (start_point.0 - 20, start_point.1);
+    } else {
+        start_point = (start_point.0 + 10, start_point.1 + 10);
+    }
     draw_convex_polygon_mut(image, &point, color_black);
 }
 
 fn draw_komp(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
     let color_white =  Rgb([0xFF, 0xFF, 0xFF]);
-    draw_aggr(relation, image);
-    let mut point: &[Point<i32>] = &[
-        Point::new(relation.get_koord()[0].0 as i32, relation.get_koord()[0].1 as i32 + 2),
-        Point::new(relation.get_koord()[0].0 as i32 + 8, relation.get_koord()[0].1 as i32 + 10),
-        Point::new(relation.get_koord()[0].0 as i32, relation.get_koord()[0].1 as i32 + 18),
-        Point::new(relation.get_koord()[0].0 as i32 - 8, relation.get_koord()[0].1 as i32 + 10)
+    let mut start_point= (relation.get_koord()[0].0 as i32 * SCALE as i32, relation.get_koord()[0].1 as i32 * SCALE as i32);
+    let point: &[Point<i32>] = &[
+        Point::new(start_point.0, start_point.1),
+        Point::new(start_point.0 + 10, start_point.1 + 10),
+        Point::new(start_point.0, start_point.1 + 20),
+        Point::new(start_point.0 - 10, start_point.1 + 10)
     ];
-    draw_convex_polygon_mut(image, &point, color_white);
-}
+    if get_start_dir(relation) == Direction::Up {
 
-fn draw_impl(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
-    let color_black = Rgb([0x00, 0x00, 0x00]);
+    } else if get_start_dir(relation) == Direction::Right {
+        start_point = (start_point.1 - 8, start_point.1 - 8);
+    } else if get_start_dir(relation) == Direction::Down {
+        start_point = (start_point.1 - 18, start_point.1);
+    } else {
+        start_point = (start_point.1 + 8, start_point.1 + 8);
+    }
+    draw_convex_polygon_mut(image, &point, color_white);
 }
 
 fn draw_inher(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
     let color_black = Rgb([0x00, 0x00, 0x00]);
     let color_white = Rgb([0xFF, 0xFF, 0xFF]);
-    let start = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32, relation.get_koord()[relation.get_koord().len() - 1].1 as f32);
+    let start = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE);
     let mut end1 = (0.0, 0.0);
     let mut end2 = (0.0, 0.0);
     if get_end_dir(relation) == Direction::Up {
-        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 + 5.0);
-        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 + 5.0);
+        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE + 5.0);
+        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE + 5.0);
         draw_line_segment_mut(image, start, (start.0, start.1 + 4.0), color_white);
     } else if get_end_dir(relation) == Direction::Right {
-        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 - 5.0);
-        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 + 5.0);
+        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE - 5.0);
+        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE + 5.0);
         draw_line_segment_mut(image, start, (start.0 - 4.0, start.1), color_white);
     } else if get_end_dir(relation) == Direction::Down {
-        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 - 5.0);
-        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 - 5.0);
+        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE - 5.0);
+        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE - 5.0);
         draw_line_segment_mut(image, start, (start.0, start.1 - 4.0), color_white);
     } else {
-        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 - 5.0);
-        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 + 5.0);
+        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE - 5.0);
+        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE + 5.0);
         draw_line_segment_mut(image, start, (start.0 + 4.0, start.1), color_white);
     }
     draw_line_segment_mut(image, start, end1, color_black);
@@ -141,28 +195,23 @@ fn draw_inher(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
 
 }
 
-fn draw_abh(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
-    let color_black = Rgb([0x00, 0x00, 0x00]);
-
-}
-
 fn draw_einfach(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
     let color_black = Rgb([0x00, 0x00, 0x00]);
-    let start = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32, relation.get_koord()[relation.get_koord().len() - 1].1 as f32);
+    let start = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE);
     let mut end1 = (0.0, 0.0);
     let mut end2 = (0.0, 0.0);
     if get_end_dir(relation) == Direction::Up {
-        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 + 5.0);
-        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 + 5.0);
+        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE + 5.0);
+        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE + 5.0);
     } else if get_end_dir(relation) == Direction::Right {
-        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 - 5.0);
-        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 + 5.0);
+        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE - 5.0);
+        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE + 5.0);
     } else if get_end_dir(relation) == Direction::Down {
-        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 - 5.0);
-        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 - 5.0);
+        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE - 5.0);
+        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE - 5.0);
     } else {
-        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 - 5.0);
-        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 + 5.0);
+        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE - 5.0);
+        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE + 5.0);
     }
     draw_line_segment_mut(image, start, end1, color_black);
     draw_line_segment_mut(image, start, end2, color_black);

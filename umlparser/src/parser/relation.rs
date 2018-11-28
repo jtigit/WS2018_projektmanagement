@@ -48,6 +48,7 @@ impl Relation {
     pub fn get_name_endknoten(&self) -> &String {
         let(x,y) = &self.verbindet;&y
     }
+    pub fn get_koord(&self) -> &Vec<(u32, u32)> { &self.koord }
     pub fn get_typ(&self) -> &String {
         &self.beschreibung.first().unwrap()
     }

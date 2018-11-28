@@ -12,9 +12,9 @@ use crate::parser::relation::*;
 #[derive(PartialEq,PartialOrd)]
 enum Direction {Up, Right, Down, Left}
 
-static SCALE: f32 = 800.0;
+static SCALE: f32 = 600.0;
 pub fn draw_klassendiagramm(klassendiagramm: &Klassendiagramm) -> ImageBuffer<Rgb<u8>, Vec<u8>> {
-    let mut image = RgbImage::new(800, 800);
+    let mut image = RgbImage::new(1800, 1800);
     let (witdth, height) = image.dimensions();
     draw_filled_rect_mut(&mut image, Rect::at(0, 0).of_size(witdth, height), Rgb([0xFF, 0xFF, 0xFF]));
 
@@ -37,11 +37,11 @@ fn draw_klasse(klasse: &Klasse, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
 
     let color_black = Rgb([0x00, 0x00, 0x00]);
     let text_height = scale;
-    let text_x = klasse.get_x() + 2.0;
-    let mut text_y = klasse.get_y() + 2.0;
+    let text_x = klasse.get_x() * SCALE + 2.0;
+    let mut text_y = klasse.get_y() * SCALE + 2.0;
 
-    let rect_x = klasse.get_x() + 0.0;
-    let mut rect_y = klasse.get_y() + 0.0;
+    let rect_x = klasse.get_x() * SCALE + 0.0;
+    let mut rect_y = klasse.get_y() * SCALE + 0.0;
     let rect_width = rect_width(klasse);
     let mut rect_height;
 

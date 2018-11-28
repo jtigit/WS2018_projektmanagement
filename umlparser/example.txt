@@ -12,6 +12,22 @@ typ: abstract name:p0
 -semi
 }
 Klasse{
+typ: abstract name:p8
+--
++atr 1
+-atr2
+#atr3
++atri4 :int usw
++atri4 :int usw +atri4 :int u
++atri4 :int usw+atri4 :int
++atri4 :int usw
+--
+- methoden
+-semi
++atri4 :int usw
++atri4 :int usw
+}
+Klasse{
 typ: abstract name:p1
 --
 +atr 1
@@ -42,11 +58,38 @@ typ:public name:p3
 ---
 - methoden
 }
+Klasse{
+typ:public name:p11
+---
++atribute
+
+---
+- methoden
+}
+Klasse{
+typ:public name:p12
+---
++atribute
+
+---
+- methoden
+}
+Klasse{
+typ:public name:p13
+---
++atribute
+
+---
+- methoden
+}
 
 V{(p1/p2) typ:impl ; m1: 0..n ; m2: 3 ;desc: }
-V{(p2/p3) typ: komp ; m1: 0..n ; m2: 3 ;desc: }
+V{(p2/p8) typ: komp ; m1: 0..n ; m2: 3 ;desc: }
 V{(p1/p3) typ: aggr ; m1: 0..n ; m2: 3 ;desc: }
-V{(p0/p2) typ:inher ; m1: 0..n ; m2: 3 ;desc: }
+V{(p0/p1) typ:inher ; m1: 0..n ; m2: 3 ;desc: }
+V{(p11/p1) typ:inher ; m1: 0..n ; m2: 3 ;desc: }
+V{(p12/p1) typ:inher ; m1: 0..n ; m2: 3 ;desc: }
+V{(p13/p1) typ:inher ; m1: 0..n ; m2: 3 ;desc: }
 V{(parser3/p3) typ: tippfehler ; m1: 0..n ; m2: 3 ;desc: }
 
 
@@ -61,7 +104,5 @@ typ:public ; name:parser3
 + methode
 llll
 }
-
-
 
 }Klassendiagramm

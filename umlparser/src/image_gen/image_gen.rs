@@ -34,7 +34,7 @@ fn draw_klasse(klasse: &Klasse, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
         .unwrap().into_font().unwrap();
     let font_bold = FontCollection::from_bytes(Vec::from(include_bytes!("VeraMono-Bold.ttf") as &[u8]))
         .unwrap().into_font().unwrap();
-    let font_italic = FontCollection::from_bytes(Vec::from(include_bytes!("VeraMono-Italic.ttf") as &[u8]))
+    let font_italic_bold = FontCollection::from_bytes(Vec::from(include_bytes!("VeraMono-Bold-Italic.ttf") as &[u8]))
         .unwrap().into_font().unwrap();
     let scale= 40.0;
     let font_scale = Scale { x: scale, y: scale };
@@ -64,9 +64,13 @@ fn draw_klasse(klasse: &Klasse, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
         //Zeichne Klassentyp  bsp abstract interface etc
         if i ==0 {
             draw_text_mut(image, color_black, text_x as u32 +d1,
-                          text_y as u32, font_scale, &font_italic, &klasse.get_id()[1]);
+                          text_y as u32, font_scale, &font_normal, &klasse.get_id()[1]);
         }else if i == 1{
-            draw_text_mut(image, color_black, text_x as u32+d0, text_y as u32, font_scale, &font_bold, &klasse.get_id()[0]);
+            let mut font = &font_italic_bold;
+            if klasse.get_id()[1].eq("") {
+                font = &font_bold;
+            }
+            draw_text_mut(image, color_black, text_x as u32+d0, text_y as u32, font_scale, &font, &klasse.get_id()[0]);
         }else{
             draw_text_mut(image, color_black, text_x as u32, text_y as u32, font_scale, &font_normal, &klasse.get_id()[i]);
         }

@@ -219,6 +219,7 @@ fn draw_inher(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
 fn draw_einfach(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
     let color_black = Rgb([0x00, 0x00, 0x00]);
     let scale:f32 = 40.0;
+    let pf :f32 = 35.0;
     let  x1 = relation.get_x_startknoten().clone()as f32;
     let  y1 = relation.get_y_startknoten().clone()as f32;
     let  x2 = relation.get_x_endknoten().clone()as f32;
@@ -237,7 +238,7 @@ fn draw_einfach(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) 
     println!("Draw einfache Relation.........{},{}                {},{}.....",&height1,&height2,&x2,&y2);
     //Start ist oben rechts von Endknoten
     if y1+height1<y2 {
-        let ax = x1 + widht1 * 0.5;
+        let ax = x1 + widht1 *0.5;
         let ay = y1 + height1;
         let a = (ax, ay);
         let dif_y = (ay - y2).abs();
@@ -256,6 +257,9 @@ fn draw_einfach(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) 
         draw_line_segment_mut(image, b, c, color_black);
         draw_line_segment_mut(image, c, d, color_black);
 
+        draw_line_segment_mut(image, (dx+pf,dy-pf), d, color_black);
+        draw_line_segment_mut(image, (dx-pf,dy-pf), d, color_black);
+
     }else if y2+height2<y1{
         let ax =x2+widht2*0.5;
         let ay =y2+height2; let a =(ax,ay);
@@ -268,7 +272,94 @@ fn draw_einfach(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) 
         draw_line_segment_mut(image, a, b, color_black);
         draw_line_segment_mut(image, b, c, color_black);
         draw_line_segment_mut(image, c, d, color_black);
+
+        draw_line_segment_mut(image, (ax+pf,ay+pf), a, color_black);
+        draw_line_segment_mut(image, (ax-pf,ay+pf), a, color_black);
+    }else if x1==x2&&y1>y2{
+        let ax =x1+widht1*0.5;
+        let ay =y1+height1; let a =(ax,ay);
+        let bx =x1; let by=y2; let b=(bx,by);
+        draw_line_segment_mut(image, a, b, color_black);
+    }else if x1==x2&&y2>y1 {
+        let ax = x2 + widht2 * 0.5;
+        let ay = y2 + height2;
+        let a = (ax, ay);
+        let bx = x1;
+        let by = y1;
+        let b = (bx, by);
+        draw_line_segment_mut(image, a, b, color_black);
+
+    }else if y1<=y2 && y1+height1>=y2  && x1<x2{
+        let ax =x1+widht1;
+        let ay =y1+height1*0.5; let a =(ax,ay);
+        let dif_x =(ax-x2).abs();
+        let bx =ax+dif_x*t; let by=ay; let b=(bx,by);
+        let cx =bx; let cy=y2+height2*0.5; let c =(cx,cy);
+        let dx =x2; let dy =cy; let d =(dx,dy);
+
+
+        draw_line_segment_mut(image, a, b, color_black);
+        draw_line_segment_mut(image, b, c, color_black);
+        draw_line_segment_mut(image, c, d, color_black);
+
+        draw_line_segment_mut(image, (dx-pf,dy-pf), d, color_black);
+        draw_line_segment_mut(image, (dx-pf,dy+pf), d, color_black);
     }
+        else if y2<=y1 && y2+height2>=y1  && x2<x1{
+            let ax =x2+widht2;
+            let ay =y2+height2*0.5; let a =(ax,ay);
+            let dif_x =(ax-x1).abs();
+            let bx =ax+dif_x*t; let by=ay; let b=(bx,by);
+            let cx =bx; let cy=y1+height1*0.5; let c =(cx,cy);
+            let dx =x1; let dy =cy; let d =(dx,dy);
+
+
+            draw_line_segment_mut(image, a, b, color_black);
+            draw_line_segment_mut(image, b, c, color_black);
+            draw_line_segment_mut(image, c, d, color_black);
+
+            draw_line_segment_mut(image, (dx-pf,dy-pf), d, color_black);
+            draw_line_segment_mut(image, (dx-pf,dy+pf), d, color_black);
+        }else if y2>=y1 && y2+height2>=y1  && x2<x1{
+            let ax =x2+widht2;
+            let ay =y2+height2*0.5; let a =(ax,ay);
+            let dif_x =(ax-x1).abs();
+            let bx =ax+dif_x*t; let by=ay; let b=(bx,by);
+            let cx =bx; let cy=y1+height1*0.5; let c =(cx,cy);
+            let dx =x1; let dy =cy; let d =(dx,dy);
+
+
+            draw_line_segment_mut(image, a, b, color_black);
+            draw_line_segment_mut(image, b, c, color_black);
+            draw_line_segment_mut(image, c, d, color_black);
+
+            draw_line_segment_mut(image, (ax+pf,ay-pf), a, color_black);
+            draw_line_segment_mut(image, (ax+pf,ay+pf), a, color_black);
+
+        }else if y2<=y1 && y2+height2>=y1  && x2>x1 {
+            let ax = x1 + widht1;
+            let ay = y1 + height1 * 0.5;
+            let a = (ax, ay);
+            let dif_x = (ax - x2).abs();
+            let bx = ax + dif_x * t;
+            let by = ay;
+            let b = (bx, by);
+            let cx = bx;
+            let cy = y2 + height2 * 0.5;
+            let c = (cx, cy);
+            let dx = x2;
+            let dy = cy;
+            let d = (dx, dy);
+
+
+            draw_line_segment_mut(image, a, b, color_black);
+            draw_line_segment_mut(image, b, c, color_black);
+            draw_line_segment_mut(image, c, d, color_black);
+
+            draw_line_segment_mut(image, (dx-pf,dy-pf), d, color_black);
+            draw_line_segment_mut(image, (dx-pf,dy+pf), d, color_black);
+
+        }
 
 }
 

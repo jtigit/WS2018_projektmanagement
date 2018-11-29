@@ -49,22 +49,22 @@ pub fn create_graph(klassen: &mut Vec<Klasse>, relationen: &mut Vec<Relation>) {
                 let widht2 = w2 as f32 * 25.0;
                 let height1 = (h1 as f32 +1.5)*scale -2.0;
                 let height2 = (h2 as f32 +1.5)*scale -2.0;
-                let r:f32 = 50.0;//rahmengröße
+                let r:f32 = 5.0;//rahmengröße
                 if ax!=bx && ay != by { //Vergleiche nur nicht gleiche Klassen
                     //Wenn es mit Rahmen kolidiert dann..
                     //Obere linke ecke
                     if bx>=ax-r && bx<= ax+widht1+r && by>=ay-r && by<= ay+height1+r {
-                        klasse_a.set_pos_y(ay-(ay+height1+r-by).abs());
+                        klasse_a.set_pos_y((ay-((ay+height1+r-by).abs()))/2500.0);
                         //Obere rechte ecke
                     } else if bx+widht2>=ax-r && bx +widht2<= ax+widht1+r && by>=ay-r && by<= ay+height1+r{
-                        klasse_a.set_pos_y(ay-(ay+height1+r-by).abs());
+                        klasse_a.set_pos_y((ay-((ay+height1+r-by).abs()))/2500.0);
                         //untere linke ecke
                     }else if bx>=ax-r && bx<= ax+widht1+r && by+height2>=ay-r && by+height2<= ay+height1+r{
-                        klasse_a.set_pos_y(ay-(ay+height1+r-by).abs());
+                        klasse_a.set_pos_y((ay-((ay+height1+r-by).abs()))/2500.0);
                         //untere rechte ecke
                     }else if bx+widht2>=ax-r && bx+widht2<= ax+widht1+r && by+height2>=ay-r && by+height2<= ay+height1+r{
-                        klasse_a.set_pos_y(ay-(ay+height1+r-by).abs());
-                    }  
+                        klasse_a.set_pos_y((ay-((ay+height1+r-by).abs()))/2500.0);
+                    }
                 }
 
             }

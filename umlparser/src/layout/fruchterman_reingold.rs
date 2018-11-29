@@ -184,7 +184,7 @@ pub fn layout_typical_2d<'a, 'b>(l: Option<f32>,
     let n = node_positions.len();
     assert!(node_neighbors.len() == n);
 
-    const MAX_ITER: usize = 100;
+    const MAX_ITER: usize = 300;
     const EPS: f32 = 0.01;
 
     let temp = 0.1f32;

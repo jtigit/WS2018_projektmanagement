@@ -18,11 +18,12 @@ pub fn draw_klassendiagramm(klassendiagramm: &Klassendiagramm) -> ImageBuffer<Rg
     let (witdth, height) = image.dimensions();
     draw_filled_rect_mut(&mut image, Rect::at(0, 0).of_size(witdth, height), Rgb([0xFF, 0xFF, 0xFF]));
 
-    for i in 0..klassendiagramm.get_klassen().len() {
-        draw_klasse(&klassendiagramm.get_klassen()[i], &mut image);
-    }
+
     for i in 0..klassendiagramm._get_relationen().len() {
         draw_relation(&klassendiagramm._get_relationen()[i], &mut image);
+    }
+    for i in 0..klassendiagramm.get_klassen().len() {
+        draw_klasse(&klassendiagramm.get_klassen()[i], &mut image);
     }
 
     return image;
@@ -103,22 +104,18 @@ fn draw_klasse(klasse: &Klasse, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
 fn draw_relation(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
     let color_black = Rgb([0x00, 0x00, 0x00]);
     let color_white =  Rgb([0xFF, 0xFF, 0xFF]);
-    for i in 0..relation.get_koord().len() - 1 {
-        let mut start = (relation.get_koord()[i].0 as f32 * SCALE, relation.get_koord()[i].1 as f32 * SCALE);
-        let mut end = (relation.get_koord()[i + 1].0 as f32 * SCALE, relation.get_koord()[i + 1].1 as f32 * SCALE);
-        if relation.get_typ() == "Implementierung" || relation.get_typ() == "Abhängigkeit" {
-            draw_dashed_line(image, start, end, color_black);
-        } else {
-            draw_line_segment_mut(image, start, end, color_black);
-        }
-    }
-    match relation.get_typ() {
-        "Komposition" => draw_komp(relation, image),
-        "Aggregation" => draw_aggr(relation, image),
-        "Implementierung" => draw_inher(relation, image),
-        "Vererbung" => draw_inher(relation, image),
-        _ => draw_einfach(relation, image)
-    }
+    //for i in 0..relation.get_koord().len() - 1 {
+       // let mut start = (relation.get_koord()[i].0 as f32 * SCALE, relation.get_koord()[i].1 as f32 * SCALE);
+      //  let mut end = (relation.get_koord()[i + 1].0 as f32 * SCALE, relation.get_koord()[i + 1].1 as f32 * SCALE);
+    //}
+    //match relation.get_typ() {
+       // "Komposition" => draw_komp(relation, image),
+       // "Aggregation" => draw_aggr(relation, image),
+       // "Implementierung" => draw_inher(relation, image),
+       // "Vererbung" => draw_inher(relation, image),
+      //  _ => draw_einfach(relation, image)
+    //}
+    draw_einfach(relation,image);
 }
 
 fn draw_dashed_line(image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>, start: (f32, f32), end: (f32, f32), color: Rgb<u8>) {
@@ -221,17 +218,41 @@ fn draw_inher(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
 
 fn draw_einfach(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
     let color_black = Rgb([0x00, 0x00, 0x00]);
-    let start = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE);
-    let mut end1 = (0.0, 0.0);
-    let mut end2 = (0.0, 0.0);
+    let scale:f32 = 40.0;
+    let  x1 = relation.get_x_startknoten().clone()as f32;
+    let  y1 = relation.get_y_startknoten().clone()as f32;
+    let  x2 = relation.get_x_endknoten().clone()as f32;
+    let  y2 = relation.get_y_endknoten().clone()as f32;
+    let (h1,w1) = relation.get_startklasse().get_laenge_breite();
+    let (h2,w2) = relation.get_endklasse().get_laenge_breite();
+    println!("Draw einfache Relation.........{},{}                {},{}.....",&h1,&w1,&x2,&y2);
+    //draw_line_segment_mut(image, (x1,y1), (x2,y2), color_black);
+    let dx =(x1-x2).abs();
+    let dy =(y1-y2).abs();
+    let height1 = (h1 as f32 +1.5)*scale -2.0;
+    let height2 = (h2 as f32 +0.5)*scale;
+    let widht1 = rect_width(&relation.get_startklasse()) as f32;
+    let widht2 = rect_width(&relation.get_endklasse())as f32;
+    let t:f32=0.5;
+    println!("Draw einfache Relation.........{},{}                {},{}.....",&height1,&height2,&x2,&y2);
+    if y1+height1<y2 {
+        let ax =x1+widht1/2.0;
+        let ay =y1+height1; let a =(ax,ay);
+        let dif_y =(ay-y2).abs();
+        let bx =ax; let by=ay+dif_y*t; let b=(bx,by);
+        let cx =x2; let cy=by; let c =(cx,cy);
+        let d=(x2,y2);
+        let dif_x =(x1-x2).abs();
 
-    let  x1 = relation.get_x_startknoten().clone();
-    let  y1 = relation.get_y_startknoten().clone();
-    let  x2 = relation.get_x_endknoten().clone();
-    let  y2 = relation.get_y_endknoten().clone();
-    println!("Draw einfache Relation.........{},{}                {},{}.....",&x1,&y1,&x2,&y2);
-    draw_line_segment_mut(image, start, end1, color_black);
-    draw_line_segment_mut(image, start, end2, color_black);
+        draw_line_segment_mut(image, a, b, color_black);
+        draw_line_segment_mut(image, b, c, color_black);
+        draw_line_segment_mut(image, c, d, color_black);
+    }else if y1==y2{
+        draw_line_segment_mut(image, (x2,y2), (x2,y2+dy*t), color_black);
+        draw_line_segment_mut(image, (x2,y2+dy*t), (x1,y2+dy*t), color_black);
+        draw_line_segment_mut(image, (x1,y2+dy*t), (x1,y1), color_black);
+    }
+
 }
 
 fn get_end_dir(relation: &Relation) -> Direction {

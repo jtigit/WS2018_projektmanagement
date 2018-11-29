@@ -3,6 +3,7 @@ extern crate regex;
 use self::regex::Regex;
 use crate::parser::parser;
 use crate::parser::klassendiagramm::klassendiagramm;
+use parser::klassendiagramm::klassendiagramm::Klasse;
 
 #[derive(Clone)]
 pub struct Relation {
@@ -12,10 +13,13 @@ pub struct Relation {
     // Typ , m1,m2
     beschreibung: Vec<String>,
     pk: usize,
+    start_klasse:Klasse,
+    end_klasse:Klasse
 }
 
 //Standard Konstruktor
-pub fn build_relation(startknoten: String, endknoten: String, beschreibung: Vec<String>) -> Relation {
+pub fn build_relation(startknoten: String, endknoten: String, beschreibung: Vec<String>,
+start_klasse: Klasse,end_klasse:Klasse) -> Relation {
     let a: (u32, u32) = (0, 0);
     let mut koord: Vec<(u32, u32)> = vec![];
     koord.push(a);
@@ -25,10 +29,16 @@ pub fn build_relation(startknoten: String, endknoten: String, beschreibung: Vec<
         parser::count_all_objects();
         pk = parser::get_counter();
     }
-    Relation { koord, verbindet: (startknoten, endknoten), beschreibung, pk }
+    Relation { koord, verbindet: (startknoten, endknoten), beschreibung, pk,start_klasse,end_klasse }
 }
 
 impl Relation {
+    pub fn get_startklasse(&self) -> &Klasse {
+        &self.start_klasse
+    }
+    pub fn get_endklasse(&self) -> &Klasse {
+        &self.end_klasse
+    }
     pub fn get_x_startknoten(&self) -> &u32 {
         let (x, _y) = self.koord.first().unwrap();
         x
@@ -146,20 +156,25 @@ pub fn baue_relationen(input: &String, klassen: &mut Vec<klassendiagramm::Klasse
         temp.push(beschr);
         if s.chars().count() > 0 && e.chars().count() > 0 {
             //pruefe ob Relation gültig ist.
+            let mut start_klasse = Klasse::default();
+            let mut end_klasse=Klasse::default();;
             let mut start: bool = false;
             let mut end: bool = false;
             for klasse in klassen.iter_mut() {
                 if klasse.get_id().first().unwrap() == &s {
                     klasse.add_ausgehend();
+                    start_klasse=klasse.clone();
                     start = true;
                 }
                 if klasse.get_id().first().unwrap() == &e {
                     klasse.add_eingehend();
+                    end_klasse = klasse.clone();
                     end = true;
                 }
             }
             if start && end {
-                relationen.push(build_relation(s.clone(), e.clone(), temp));
+                relationen.push(build_relation(s.clone(), e.clone(), temp
+                ,start_klasse,end_klasse));
             }
         }
     }

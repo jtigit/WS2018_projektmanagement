@@ -142,7 +142,6 @@ impl<'a, 'b, V> ForceDirected<V> for Layout<'a, 'b, V>
 
     fn update_force_each_node_pair<F: Fn(&V, &V) -> V>(&mut self, f: F) {
         let n = self.node_positions.len();
-        println!("anzahl Knoten {}",&n);
         assert!(n == self.forces.len());
 
         for i1 in 0..n - 1 {

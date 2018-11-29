@@ -8,7 +8,7 @@ use crate::layout::graphbuilder;
 use crate::image_gen::image_gen;
 use image::{Rgb, RgbImage, ImageBuffer};
 
-#[derive(Clone)]
+#[derive(Debug, Default,Clone)]
 pub struct Klasse {
     x: f32,
     y: f32,

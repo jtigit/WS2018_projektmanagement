@@ -230,27 +230,44 @@ fn draw_einfach(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) 
     let dx =(x1-x2).abs();
     let dy =(y1-y2).abs();
     let height1 = (h1 as f32 +1.5)*scale -2.0;
-    let height2 = (h2 as f32 +0.5)*scale;
+    let height2 = (h2 as f32 +1.5)*scale -2.0;
     let widht1 = rect_width(&relation.get_startklasse()) as f32;
     let widht2 = rect_width(&relation.get_endklasse())as f32;
     let t:f32=0.5;
     println!("Draw einfache Relation.........{},{}                {},{}.....",&height1,&height2,&x2,&y2);
+    //Start ist oben rechts von Endknoten
     if y1+height1<y2 {
-        let ax =x1+widht1/2.0;
-        let ay =y1+height1; let a =(ax,ay);
-        let dif_y =(ay-y2).abs();
-        let bx =ax; let by=ay+dif_y*t; let b=(bx,by);
-        let cx =x2; let cy=by; let c =(cx,cy);
-        let d=(x2,y2);
-        let dif_x =(x1-x2).abs();
+        let ax = x1 + widht1 * 0.5;
+        let ay = y1 + height1;
+        let a = (ax, ay);
+        let dif_y = (ay - y2).abs();
+        let bx = ax;
+        let by = ay + dif_y * t;
+        let b = (bx, by);
+        let cx = x2 + widht2 * 0.5;
+        let cy = by;
+        let c = (cx, cy);
+        let dx = cx;
+        let dy = y2;
+        let d = (dx, dy);
+        let dif_x = (x1 + widht1 - x2 + widht2).abs();
 
         draw_line_segment_mut(image, a, b, color_black);
         draw_line_segment_mut(image, b, c, color_black);
         draw_line_segment_mut(image, c, d, color_black);
-    }else if y1==y2{
-        draw_line_segment_mut(image, (x2,y2), (x2,y2+dy*t), color_black);
-        draw_line_segment_mut(image, (x2,y2+dy*t), (x1,y2+dy*t), color_black);
-        draw_line_segment_mut(image, (x1,y2+dy*t), (x1,y1), color_black);
+
+    }else if y2+height2<y1{
+        let ax =x2+widht2*0.5;
+        let ay =y2+height2; let a =(ax,ay);
+        let dif_y =(ay-y1).abs();
+        let bx =ax; let by=ay+dif_y*t; let b=(bx,by);
+        let cx =x1 +widht1*0.5; let cy=by; let c =(cx,cy);
+        let dx =cx; let dy =y1; let d =(dx,dy);
+        let dif_x =(x1+widht1-x2+widht2).abs();
+
+        draw_line_segment_mut(image, a, b, color_black);
+        draw_line_segment_mut(image, b, c, color_black);
+        draw_line_segment_mut(image, c, d, color_black);
     }
 
 }

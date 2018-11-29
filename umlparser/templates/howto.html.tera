@@ -18,16 +18,31 @@
             <li class="collection-item avatar">
                 <i class="material-icons circle green">help</i>
                 <span class="title">Klasse</span>
-                <p></p>
+                <p>Klasse{<br>
+                    typ: abstract name:p0<br>
+                    --<br>
+                    +atr 1<br>
+                    -atr2<br>
+                    #atr3<br>
+                    +atri4 :int usw<br>
+                    --<br>
+                    - methoden<br>
+                    -semi<br>
+                    }</p>
                 <i class="secondary-content material-icons">code</i>
             </li>
             <li class="collection-item avatar">
                 <i class="material-icons circle red">help</i>
                 <span class="title">Relation</span>
-                <p></p>
+                <p>V{(p1/p2) typ:impl ; m1: 0..n ; m2: 3 ;desc: beschreibung}
+                <br><br>
+                    von p1 nach p2 vom typ Implementierung<br>
+                    m1 & m2 sind die Kardinalitäten der jeweiligen Seite<br>
+                    bei desc kann man eine beschreibung einfügen<br>
+                </p>
                     <i class="secondary-content material-icons">code</i>
             </li>
-            <li class="collection-item avatar">
+          <!--  <li class="collection-item avatar">
                 <i class="material-icons circle">help</i>
                 <span class="title">Title</span>
                 <p></p>
@@ -38,7 +53,7 @@
                 <span class="title">Title</span>
                 <p></p>
                 <i class="secondary-content material-icons">code</i>
-            </li>
+            </li>-->
         </ul>
     </div>
 </div>

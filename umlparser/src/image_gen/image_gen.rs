@@ -55,8 +55,8 @@ fn draw_klasse(klasse: &Klasse, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
     let rect_len =(rect_width/2) as f32;
     let d0 =(rect_len +(ch_len0 ))as u32;
     let d1 =(rect_len +(ch_len1 ))as u32;
-    println!("d0:{}",rect_len);
-    println!("d1:{}",d1);
+    //println!("d0:{}",rect_len);
+    //println!("d1:{}",d1);
 
 
     // Klasse.id
@@ -224,19 +224,12 @@ fn draw_einfach(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) 
     let start = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE);
     let mut end1 = (0.0, 0.0);
     let mut end2 = (0.0, 0.0);
-    if get_end_dir(relation) == Direction::Up {
-        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE + 5.0);
-        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE + 5.0);
-    } else if get_end_dir(relation) == Direction::Right {
-        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE - 5.0);
-        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE + 5.0);
-    } else if get_end_dir(relation) == Direction::Down {
-        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE - 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE - 5.0);
-        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE - 5.0);
-    } else {
-        end1 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE - 5.0);
-        end2 = (relation.get_koord()[relation.get_koord().len() - 1].0 as f32 * SCALE + 5.0, relation.get_koord()[relation.get_koord().len() - 1].1 as f32 * SCALE + 5.0);
-    }
+
+    let  x1 = relation.get_x_startknoten().clone();
+    let  y1 = relation.get_y_startknoten().clone();
+    let  x2 = relation.get_x_endknoten().clone();
+    let  y2 = relation.get_y_endknoten().clone();
+    println!("Draw einfache Relation.........{},{}                {},{}.....",&x1,&y1,&x2,&y2);
     draw_line_segment_mut(image, start, end1, color_black);
     draw_line_segment_mut(image, start, end2, color_black);
 }

@@ -38,12 +38,19 @@ impl Relation {
         y
     }
     pub fn get_x_endknoten(&self) -> &u32 {
-        let (x, _y) = self.koord.last().unwrap();
+        let (x, _y) = self.koord.get(1).unwrap();
         x
     }
     pub fn get_y_endknoten(&self) -> &u32 {
-        let (_x, y) = self.koord.last().unwrap();
+        let (_x, y) = self.koord.get(1).unwrap();
         y
+    }
+    pub fn set_startknoten(&mut self,x:u32,y:u32) {
+        self.koord[0]=(x,y);
+    }
+
+    pub fn set_endknoten(&mut self,x:u32,y:u32)  {
+        self.koord[1]=(x,y);
     }
     pub fn get_name_startknoten(&self) -> &String {
         let (x, _y) = &self.verbindet;

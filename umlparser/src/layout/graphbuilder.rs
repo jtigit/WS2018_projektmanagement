@@ -32,6 +32,23 @@ pub fn create_graph(klassen: &mut Vec<Klasse>, relationen: &mut Vec<Relation>) {
         println!("knoten {}   edges {}", graph.node_count(), graph.edge_count());
 
         layout_graph(klassen, graph, None);
+        for relation in relationen.iter_mut() {
+            let s = relation.get_name_startknoten().clone();
+            let e = relation.get_name_endknoten().clone();
+
+            for klasse in klassen.iter_mut() {
+                if klasse.get_id().first().unwrap() == &s.to_string() {
+                    let x = *klasse.get_pos_x()as u32;
+                    let y =*klasse.get_pos_y()as u32;
+                    relation.set_startknoten(x,y);
+                }
+                else if klasse.get_id().first().unwrap() == &e.to_string() {
+                    let x = *klasse.get_pos_x()as u32;
+                    let y =*klasse.get_pos_y()as u32;
+                    relation.set_endknoten(x,y);
+                }
+            }
+        }
     }
 }
 

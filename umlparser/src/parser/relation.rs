@@ -8,19 +8,37 @@ use parser::klassendiagramm::klassendiagramm::Klasse;
 #[derive(Clone)]
 pub struct Relation {
     //Können mehrere Punkte sein. erster und letzer sind start und end
-    koord: Vec<(u32, u32)>,
+    // 0: A = Startknoten
+    // 1: D = EndKnoten         r2
+    // 2: B = Zwischenknoten    A-------B
+    // 3: C = Zwischenknoten    m2      | desc
+    // 4: m1 = Beschriftung             |         r1
+    // 5: m2 = Beschriftung             C-------->D
+    // 6: r1 = Beschriftung                        m1
+    // 7: r2 = Beschriftung
+    // 8: desc = Beschriftung
+    pub koord: Vec<(u32, u32)>,
+    pub richtung: u32,
+
     verbindet: (String, String),
-    // Typ , m1,m2
+    // 0: typ
+    // 1: m1 = Beschriftung             |         r1
+    // 2: m2 = Beschriftung             C-------->D
+    // 3: r1 = Beschriftung                        m1
+    // 4: r2 = Beschriftung
+    // 5: desc = Beschriftung
     beschreibung: Vec<String>,
     pk: usize,
-    start_klasse:Klasse,
-    end_klasse:Klasse
+    start_klasse: Klasse,
+    end_klasse: Klasse,
+    //Knotenpunkte zum Zeichnen von A nach D : A,B,C,D
 }
 
 //Standard Konstruktor
 pub fn build_relation(startknoten: String, endknoten: String, beschreibung: Vec<String>,
-start_klasse: Klasse,end_klasse:Klasse) -> Relation {
+                      start_klasse: Klasse, end_klasse: Klasse) -> Relation {
     let a: (u32, u32) = (0, 0);
+    let richtung: u32 = 0;
     let mut koord: Vec<(u32, u32)> = vec![];
     koord.push(a);
     koord.push(a);
@@ -29,7 +47,7 @@ start_klasse: Klasse,end_klasse:Klasse) -> Relation {
         parser::count_all_objects();
         pk = parser::get_counter();
     }
-    Relation { koord, verbindet: (startknoten, endknoten), beschreibung, pk,start_klasse,end_klasse }
+    Relation { koord, verbindet: (startknoten, endknoten), richtung, beschreibung, pk, start_klasse, end_klasse }
 }
 
 impl Relation {
@@ -55,12 +73,12 @@ impl Relation {
         let (_x, y) = self.koord.get(1).unwrap();
         y
     }
-    pub fn set_startknoten(&mut self,x:u32,y:u32) {
-        self.koord[0]=(x,y);
+    pub fn set_startknoten(&mut self, x: u32, y: u32) {
+        self.koord[0] = (x, y);
     }
 
-    pub fn set_endknoten(&mut self,x:u32,y:u32)  {
-        self.koord[1]=(x,y);
+    pub fn set_endknoten(&mut self, x: u32, y: u32) {
+        self.koord[1] = (x, y);
     }
     pub fn get_name_startknoten(&self) -> &String {
         let (x, _y) = &self.verbindet;
@@ -79,6 +97,52 @@ impl Relation {
     }
     pub fn get_beschr_endknoten(&self) -> &String {
         &self.beschreibung.get(2).unwrap()
+    }
+    //Gibt die Richtung eines Punktes(x2,y2) relativ zum Punkt (x1,y1) zurück
+    // Für die Berechnung wird das normale Kartesensystem verwendet!!
+    // das Ergebniss entspricht aber eines wo die y achse nach unten verläuft .
+    // das heisst (0,1) ist "Oben" zu (0,0) im Ergebniss.
+    pub fn bestimme_richtung(x1: i32, y1: i32, x2: i32, y2: i32) -> String {
+        let mut value: String = "".to_string();
+        let dx: i32 = x2 - x1;
+        let dy: i32 = y2 - y1;
+        let g = dx - dy;
+        let h = -dx - dy;
+        if g <= 0 && h < 0 {
+            value = "Unten".to_string();
+        } else if g > 0 && h <= 0 {
+            value = "Rechts".to_string();
+        } else if g >= 0 && h > 0 {
+            value = "Oben".to_string();
+        } else if g < 0 && h >= 0 {
+            value = "Links".to_string();
+        }
+        value
+    }
+    //Setzt die ZwischenPunkte und die der Beschriftungen fest.
+    pub fn setze_koordinaten(& mut self,ax:u32,ay:u32,dx:u32,dy:u32,richtung:String){
+        let mut bx:u32=0; let mut by:u32=0;
+        let mut cx:u32=0; let mut cy:u32=0;
+        let mut m1x:u32=0; let mut m1y:u32=0;
+        let mut m2x:u32=0; let mut m2y:u32=0;
+        let mut r1x:u32=0; let mut r1y:u32=0;
+        let mut r2x:u32=0; let mut r2y:u32=0;
+        let mut descx:u32=0; let mut descy:u32=0;
+        if richtung == "Unten"{
+            bx=ax; by = dy-ay /2;
+            cx=dx; cy=by;
+        }else if richtung == "Oben"{
+            bx=ax; by = ay-dy /2;
+            cx=dx; cy=by;
+        }else if richtung == "Links"{
+            by=ay; bx = ax-dx /2;
+            cy=dy; cx=bx;
+        }else if richtung == "Rechts"{
+            by=ay; bx = dx-ax /2;
+            cy=dy; cx=bx;
+        }
+        self.koord[2]=(bx,by);
+        self.koord[3]=(cx,cy);
     }
 }
 
@@ -104,13 +168,13 @@ pub fn sammle_typ(content: &String) -> String {
     let re = Regex::new(r".*\(.*/.*\).*typ:(?P<text>.?[\w^;]+.?)")
         .unwrap();
     let mut value: String;
-    let temp:String =  parser::parse_text_to_string(&content, &re);
+    let temp: String = parser::parse_text_to_string(&content, &re);
     let re = Regex::new(r"(?P<text>[\w]+)")
         .unwrap();
-    let temp2:String =  parser::parse_text_to_string(&temp, &re);
+    let temp2: String = parser::parse_text_to_string(&temp, &re);
     let s = temp2.as_str();
     match s {
-        "komp" => value =  "Komposition".to_string(),//schwarze raute
+        "komp" => value = "Komposition".to_string(),//schwarze raute
         "aggr" => value = "Aggregation".to_string(), //weiße raute
         "impl" => value = "Implementierung".to_string(), // gestrichelt weißer ausgefüllter Pfeil
         "inher" => value = "Vererbung".to_string(),// durchgezogen weißer ausgefüllter Pfeil
@@ -157,13 +221,14 @@ pub fn baue_relationen(input: &String, klassen: &mut Vec<klassendiagramm::Klasse
         if s.chars().count() > 0 && e.chars().count() > 0 {
             //pruefe ob Relation gültig ist.
             let mut start_klasse = Klasse::default();
-            let mut end_klasse=Klasse::default();;
+            let mut end_klasse = Klasse::default();
+            ;
             let mut start: bool = false;
             let mut end: bool = false;
             for klasse in klassen.iter_mut() {
                 if klasse.get_id().first().unwrap() == &s {
                     klasse.add_ausgehend();
-                    start_klasse=klasse.clone();
+                    start_klasse = klasse.clone();
                     start = true;
                 }
                 if klasse.get_id().first().unwrap() == &e {
@@ -174,10 +239,39 @@ pub fn baue_relationen(input: &String, klassen: &mut Vec<klassendiagramm::Klasse
             }
             if start && end {
                 relationen.push(build_relation(s.clone(), e.clone(), temp
-                ,start_klasse,end_klasse));
+                                               , start_klasse, end_klasse));
             }
         }
     }
     relationen
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn bestimme_richtung_oben() {
+        assert_eq!("Oben", Relation::bestimme_richtung(1,1,1,0));
+        //diagpnale test
+        assert_eq!("Oben", Relation::bestimme_richtung(1,1,0,0));
+        //negative value test
+        assert_eq!("Oben", Relation::bestimme_richtung(-1,-1,-1,-2));
+    }
+    #[test]
+    fn bestimme_richtung_links() {
+        assert_eq!("Links", Relation::bestimme_richtung(1,1,0,1));
+        //Linke grenze
+        assert_eq!("Links", Relation::bestimme_richtung(1,1,0,2));
+    }
+    #[test]
+    fn bestimme_richtung_rechts() {
+        assert_eq!("Rechts", Relation::bestimme_richtung(1,1,2,1));
+        assert_eq!("Rechts", Relation::bestimme_richtung(1,1,2,0));
+    }
+    #[test]
+    fn bestimme_richtung_unten() {
+        assert_eq!("Unten", Relation::bestimme_richtung(1,1,1,2));
+        assert_eq!("Unten", Relation::bestimme_richtung(1,1,2,2));
+    }
 }
 

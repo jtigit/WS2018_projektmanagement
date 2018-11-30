@@ -215,7 +215,16 @@ fn draw_inher(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
     draw_line_segment_mut(image, end1, end2, color_black);
 
 }
+fn draw_einfach_neu(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
+    let color_black = Rgb([0x00, 0x00, 0x00]);
+    let scale:f32 = 40.0;
+    let pf :f32 = 35.0;
+    let  x1 = relation.get_x_startknoten().clone()as f32;
+    let  y1 = relation.get_y_startknoten().clone()as f32;
+    let  x2 = relation.get_x_endknoten().clone()as f32;
+    let  y2 = relation.get_y_endknoten().clone()as f32;
 
+}
 fn draw_einfach(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
     let color_black = Rgb([0x00, 0x00, 0x00]);
     let scale:f32 = 40.0;

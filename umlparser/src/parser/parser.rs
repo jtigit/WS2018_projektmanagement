@@ -25,7 +25,7 @@ impl Diagramme{
     }
 }
 ///startet die Oberste Ebene des Parsers und ruft alle drunter liegenden Parser Methoden auf.
-pub fn starte_umlparser(input: &String)->Diagramme {
+pub fn starte_umlparser<'a>(input: &String)->Diagramme {
     unsafe {
         OBJECTCOUNTER = 0;
     }

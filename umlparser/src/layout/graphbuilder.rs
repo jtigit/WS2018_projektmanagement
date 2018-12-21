@@ -19,6 +19,7 @@ pub fn create_graph(klassen: &mut Vec<Klasse>, relationen: &mut Vec<Relation>) {
             let e = relation.get_name_endknoten();
             let mut n1: usize = 0;
             let mut n2: usize = 0;
+            let mut i : usize = 0;
             for klasse in klassen.iter_mut() {
                 if klasse.get_id().first().unwrap() == &s.to_string() {
                     n1 = *klasse.get_pk();
@@ -31,8 +32,9 @@ pub fn create_graph(klassen: &mut Vec<Klasse>, relationen: &mut Vec<Relation>) {
         }
         println!("knoten {}   edges {}", graph.node_count(), graph.edge_count());
 
-        layout_graph(klassen, graph, None);
+        layout_graph(klassen, graph, Option::from(None));
         //Kolisionsbehandlung
+
         let mut klassen2 = klassen.clone();
         for klasse_a in klassen.iter_mut() {
             for klasse_b in klassen2.iter_mut() {

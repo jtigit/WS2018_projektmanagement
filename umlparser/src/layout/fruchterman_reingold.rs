@@ -184,7 +184,7 @@ pub fn layout_typical_2d<'a, 'b>(l: Option<f32>,
     let n = node_positions.len();
     assert!(node_neighbors.len() == n);
 
-    const MAX_ITER: usize = 300;
+    const MAX_ITER: usize = 1000;
     const EPS: f32 = 0.01;
 
     let temp = 0.1f32;
@@ -196,7 +196,7 @@ pub fn layout_typical_2d<'a, 'b>(l: Option<f32>,
     // `l`: ideal length of spring
     let l: f32 = l.unwrap_or((1.0 / n as f32).sqrt());
 
-    let k_r = l * l;
+    let k_r = l*l;
     let k_s = l;
 
     let mut lay = Layout::new(node_positions, node_neighbors);

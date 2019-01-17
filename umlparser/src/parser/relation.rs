@@ -31,7 +31,6 @@ pub struct Relation {
     pk: usize,
     start_klasse:   Klasse,
     end_klasse:   Klasse,
-    //Knotenpunkte zum Zeichnen von A nach D : A,B,C,D
 }
 
 //Standard Konstruktor

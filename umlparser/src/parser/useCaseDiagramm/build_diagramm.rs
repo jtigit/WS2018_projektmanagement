@@ -124,8 +124,9 @@ fn baue_relations(input: &String)->Vec<Relation>{
         }else if bezeichung == "Extension"{
             r = Relation::new_extend();
         }else{
-
         }
+        r.start.name=start;
+        r.ende.name=ende;
         relations.push(r);
     }
     relations

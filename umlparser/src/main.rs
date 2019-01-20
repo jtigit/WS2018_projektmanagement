@@ -23,7 +23,8 @@ fn main() {
     //start_rocket();
     //test_usecase();
     //test_actor();
-    test_boundary();
+    //test_boundary();
+    test_relation();
 }
 
 fn test() {
@@ -67,6 +68,16 @@ fn test_boundary() {
     let u = &kd.boundarys;
     for boundary in u {
         println!("Main::Boundary  : {}  ",boundary.text.name);
+    }
+}
+fn test_relation() {
+    let kdv: Vec<Usecasediagramm> = parser::parser::starte_umlparser(&read_file("usecase_example.txt".to_string()))
+        .get_usecasediagramme();
+    let kd:&Usecasediagramm = kdv.get(0).unwrap();
+    let u = &kd.relations;
+    for relation in u {
+        println!("Main::relation  : start:{} , ende:{} , typ: {} "
+                 ,relation.start.name,relation.ende.name,relation.text.name);
     }
 }
 

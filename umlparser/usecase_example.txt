@@ -27,5 +27,7 @@ Usecase4
 --
 }
 V{(Usecase1/Usecase2) typ:include }
+V{(Usecase1/Usecase2) typ:extend }
+V{(Usecase1/Usecase2) }
 
 }Usecasediagramm

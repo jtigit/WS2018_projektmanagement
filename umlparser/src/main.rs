@@ -21,10 +21,11 @@ use crate::parser::useCaseDiagramm::usecasediagramm::Usecasediagramm;
 fn main() {
 
     //start_rocket();
+    test();
     //test_usecase();
     //test_actor();
     //test_boundary();
-    test_relation();
+    //test_relation();
 }
 
 fn test() {
@@ -36,7 +37,8 @@ fn test() {
         println!("Main:::Klassenname:{:?}  Koordinaten({}/{})",klasse.get_id().first(),klasse.get_pos_x(),klasse.get_pos_y());
     }
     for relation in r {
-        println!("Main:::Relation:  typ:{}",relation.get_typ());
+        println!("Main:::Relation: typ:{},  m1:{}   , m2:{}",relation.get_typ()
+        ,relation.get_beschr_startknoten(),relation.get_beschr_endknoten());
     }
 }
 fn test_usecase() {

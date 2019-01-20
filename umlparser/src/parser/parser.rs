@@ -2,6 +2,8 @@ extern crate regex;
 //Starte UmL Parser
 use crate::parser::klassendiagramm::klassendiagramm::Klassendiagramm;
 use crate::parser::klassendiagramm::klassendiagramm;
+use crate::parser::useCaseDiagramm::build_diagramm;
+use crate::parser::useCaseDiagramm::usecasediagramm;
 use self::regex::Regex;
 
 static mut OBJECTCOUNTER: usize = 0;
@@ -18,12 +20,16 @@ pub unsafe fn get_counter() -> usize {
 
 ///Hält alle Klassendiagramme
 pub struct Diagramme{
-    klassendiagramme: Vec<Klassendiagramm>
+    klassendiagramme: Vec<Klassendiagramm>,
+    usecasediagramme: Vec<usecasediagramm::Usecasediagramm>
 }
 impl Diagramme{
     ///gibt einen Vektor aller Klassendiagramme zurück
     pub fn get_klassendiagramme(self)->Vec<Klassendiagramm>{
         self.klassendiagramme
+    }
+    pub fn get_usecasediagramme(self)->Vec<usecasediagramm::Usecasediagramm>{
+        self.usecasediagramme
     }
 }
 ///startet die Oberste Ebene des Parsers und ruft alle drunter liegenden Parser Methoden auf.
@@ -32,7 +38,8 @@ pub fn starte_umlparser<'a>(input: &String)->Diagramme {
         OBJECTCOUNTER = 0;
     }
     let klassendiagramme =klassendiagramm::parse_klassendiagramme(&input);
-    let diagramme = Diagramme{klassendiagramme};
+    let usecasediagramme=build_diagramm::build_usecasediagramm(&input);
+    let diagramme = Diagramme{klassendiagramme,usecasediagramme};
     diagramme
 }
 

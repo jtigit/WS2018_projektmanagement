@@ -1,0 +1,17 @@
+Usecasediagramm{
+
+Usecase{
+name:Usecase0
+}
+Usecase{
+name:Usecase1
+extension: Extension Point
+}
+Usecase{
+name:Usecase2
+}
+Usecase{
+name:Usecase3
+}
+
+}Usecasediagramm

@@ -14,4 +14,17 @@ Usecase{
 name:Usecase3
 }
 
+Actor{
+name: Actor0
+}
+
+Boundary{
+name: Boundary0
+--
+Usecase2
+Usecase1
+Usecase4
+--
+}
+
 }Usecasediagramm

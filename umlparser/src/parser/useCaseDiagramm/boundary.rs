@@ -4,7 +4,7 @@ use crate ::parser::useCaseDiagramm::usecase::Usecase;
 pub struct Boundary{
     pub figur: Object,
     pub text: Object,
-    pub usecaseliste:Vec<Usecase>,
+    pub usecaseliste:Vec<String>,
 }
 
 impl Boundary{

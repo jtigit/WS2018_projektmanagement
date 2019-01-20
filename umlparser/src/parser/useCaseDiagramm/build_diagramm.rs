@@ -23,8 +23,9 @@ pub fn build_usecasediagramm(input: &String) -> Vec<Usecasediagramm> {
     for Usecasediagramm in v.iter() {
         let mut usecases = baue_usecases(Usecasediagramm);
         let mut actors = baue_actors(Usecasediagramm);
-        let mut boundarys = baue_boundarys(Usecasediagramm);
+        let mut boundarys = baue_boundarys(Usecasediagramm,&usecases);
         let mut relations = baue_relations(Usecasediagramm);
+
         let result: Usecasediagramm = Usecasediagramm { usecases, actors, boundarys, relations };
         usecasediagramme.push(result);
     }
@@ -66,7 +67,7 @@ fn baue_actors(input: &String)->Vec<Actor>{
     }
     actors
 }
-fn baue_boundarys(input: &String)->Vec<Boundary>{
+fn baue_boundarys(input: &String,usecases_ref:&Vec<Usecase>)->Vec<Boundary>{
     let mut bezeichung = String::from("");
     let v: Vec<String> = sammle_boundarys(input).clone();
     let mut boundarys: Vec<Boundary> = vec![];
@@ -74,8 +75,28 @@ fn baue_boundarys(input: &String)->Vec<Boundary>{
 
     for boundary in v.iter() {
         bezeichung = sammle_boundary_bezeichnung(boundary);
+        let usecases = sammle_boundary_usecases(boundary);
+        // Trenne Attribute von next line und carriege return
+        let a: Vec<String> = sammle_argumente(&usecases);
         if bezeichung.chars().count()>0{
-            let b :Boundary = Boundary::new(bezeichung);
+            let mut b :Boundary = Boundary::new(bezeichung);
+
+            //Aufgelistete Usecases werden auf Existenz geprüft und hinzugefügt
+            for usecase in usecases_ref{
+                let usecase_name = &usecase.text.name;
+                let usecase_name_clone = &usecase.text.name;
+                for compare_name in &a{
+                    if *usecase_name==*compare_name{
+                        let mut value = "".to_string();
+                        value +=usecase_name;
+                        b.usecaseliste.push(value);
+                    }
+                }
+            }
+            /*
+            for test in &b.usecaseliste{
+                println!("Boundary::  {}",test);
+            }*/
             boundarys.push(b);
         }else{
         }
@@ -148,6 +169,11 @@ fn sammle_boundary_bezeichnung(content: &String) -> String {
         .unwrap();
     parser::parse_text_to_string(&content, &re)
 }
+fn sammle_boundary_usecases(content: &String) -> String {
+    let re = Regex::new(r"(?s)[-]{2,}[\r\n]{1,}(?P<text>.*)[\r\n]{1,}[-]{2,}")
+        .unwrap();
+    parser::parse_text_to_string(&content, &re)
+}
 //Relation
 pub fn sammle_relations(content: &String) -> Vec<String> {
     let re = Regex::new(r"V\{(?P<text>[^\}]+)\}")
@@ -182,4 +208,11 @@ pub fn sammle_relation_typ(content: &String) -> String {
         _ => value = "Einfache Abhängigkeit".to_string()//durchgezogene Linie
     }
     value
+}
+//cariage return trenner
+fn sammle_argumente(content: &String) -> Vec<String> {
+    let re = Regex::new(r"(?s)(?P<text>[^\r\n]+)")
+        .unwrap();
+    let v: Vec<String> = parser::parse_text_tovector(&content, &re);
+    v
 }

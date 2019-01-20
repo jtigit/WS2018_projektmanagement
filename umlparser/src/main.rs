@@ -4,7 +4,6 @@
 extern crate rocket_contrib;
 extern crate tera;
 extern crate rand;
-
 extern crate image;
 extern crate imageproc;
 extern crate rusttype;
@@ -22,7 +21,9 @@ use crate::parser::useCaseDiagramm::usecasediagramm::Usecasediagramm;
 fn main() {
 
     //start_rocket();
-    test_usecase();
+    //test_usecase();
+    //test_actor();
+    test_boundary();
 }
 
 fn test() {
@@ -50,6 +51,26 @@ fn test_usecase() {
         }
     }
 }
+fn test_actor() {
+    let kdv: Vec<Usecasediagramm> = parser::parser::starte_umlparser(&read_file("usecase_example.txt".to_string()))
+        .get_usecasediagramme();
+    let kd:&Usecasediagramm = kdv.get(0).unwrap();
+    let u = &kd.actors;
+    for actor in u {
+            println!("Main::Actor  : {}  ",actor.art.name);
+    }
+}
+fn test_boundary() {
+    let kdv: Vec<Usecasediagramm> = parser::parser::starte_umlparser(&read_file("usecase_example.txt".to_string()))
+        .get_usecasediagramme();
+    let kd:&Usecasediagramm = kdv.get(0).unwrap();
+    let u = &kd.boundarys;
+    for boundary in u {
+        println!("Main::Boundary  : {}  ",boundary.text.name);
+    }
+}
+
+
 
 fn start_rocket() {
     rocket::ignite()

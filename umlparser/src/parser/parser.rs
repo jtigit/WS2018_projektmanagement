@@ -2,9 +2,10 @@ extern crate regex;
 //Starte UmL Parser
 use crate::parser::klassendiagramm::klassendiagramm::Klassendiagramm;
 use crate::parser::klassendiagramm::klassendiagramm;
-
 use self::regex::Regex;
+
 static mut OBJECTCOUNTER: usize = 0;
+
 ///inkrementiert den Zähler
 pub unsafe fn count_all_objects() {
     OBJECTCOUNTER = OBJECTCOUNTER + 1;
@@ -13,6 +14,7 @@ pub unsafe fn count_all_objects() {
 pub unsafe fn get_counter() -> usize {
     OBJECTCOUNTER
 }
+
 
 ///Hält alle Klassendiagramme
 pub struct Diagramme{

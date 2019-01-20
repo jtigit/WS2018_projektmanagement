@@ -1,4 +1,4 @@
-#![feature(proc_macro_hygiene, decl_macro, plugin, custom_derive, non_ascii_idents)]
+#![feature(proc_macro_hygiene, decl_macro, plugin, non_ascii_idents)]
 #[macro_use] extern crate rocket;
 
 extern crate rocket_contrib;

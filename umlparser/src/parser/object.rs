@@ -1,10 +1,10 @@
 
 pub struct Object {
-    x : f32,
-    y: f32,
-    w: f32,
-    h: f32,
-    name: String,
+    pub x : f32,
+    pub y: f32,
+    pub w: f32,
+    pub h: f32,
+    pub name: String,
 }
 
 

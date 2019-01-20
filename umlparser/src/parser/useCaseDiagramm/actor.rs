@@ -2,8 +2,8 @@
 use crate ::parser::object::Object;
 
 pub struct Actor{
-    figur: Object,
-    art: Object,
+    pub figur: Object,
+    pub art: Object,
 }
 
 impl Actor{

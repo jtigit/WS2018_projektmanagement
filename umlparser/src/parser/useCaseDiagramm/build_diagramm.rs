@@ -6,6 +6,7 @@ use crate::parser::useCaseDiagramm::actor::Actor;
 use crate::parser::useCaseDiagramm::boundary::Boundary;
 use crate::parser::useCaseDiagramm::relation::Relation;
 use crate::parser::parser;
+use crate::layout::usecase_layout as layout;
 use self::regex::Regex;
 
 
@@ -25,6 +26,8 @@ pub fn build_usecasediagramm(input: &String) -> Vec<Usecasediagramm> {
         let mut actors = baue_actors(Usecasediagramm);
         let mut boundarys = baue_boundarys(Usecasediagramm,&usecases);
         let mut relations = baue_relations(Usecasediagramm);
+
+        layout::create_layout(&mut usecases,&mut relations,&mut boundarys,&mut actors);
 
         let result: Usecasediagramm = Usecasediagramm { usecases, actors, boundarys, relations };
         usecasediagramme.push(result);

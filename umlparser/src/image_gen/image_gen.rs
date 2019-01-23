@@ -269,6 +269,17 @@ fn draw_einfach(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) 
         draw_line_segment_mut(image, (dx+pf,dy-pf), d, color_black);
         draw_line_segment_mut(image, (dx-pf,dy-pf), d, color_black);
 
+        // Zeichne m1
+        let scale= 40.0;
+        let font_scale = Scale { x: scale, y: scale };
+        let font_normal = FontCollection::from_bytes(Vec::from(include_bytes!("VeraMono.ttf") as &[u8]))
+            .unwrap().into_font().unwrap();
+
+        let m1 = relation.get_beschr_startknoten();
+        println!("Draw m1 :: {}", m1);
+        draw_text_mut(image, color_black, dx as u32 ,
+                      dy as u32, font_scale, &font_normal, m1);
+
     }else if y2+height2<y1{
         let ax =x2+widht2*0.5;
         let ay =y2+height2; let a =(ax,ay);
@@ -284,6 +295,18 @@ fn draw_einfach(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) 
 
         draw_line_segment_mut(image, (ax+pf,ay+pf), a, color_black);
         draw_line_segment_mut(image, (ax-pf,ay+pf), a, color_black);
+
+        // Zeichne m1
+        let scale= 40.0;
+        let font_scale = Scale { x: scale, y: scale };
+        let font_normal = FontCollection::from_bytes(Vec::from(include_bytes!("VeraMono.ttf") as &[u8]))
+            .unwrap().into_font().unwrap();
+
+        let m1 = relation.get_beschr_startknoten();
+        println!("Draw m1 :: {}", m1);
+        draw_text_mut(image, color_black, dx as u32 ,
+                      dy as u32, font_scale, &font_normal, m1);
+
     }else if x1==x2&&y1>y2{
         let ax =x1+widht1*0.5;
         let ay =y1+height1; let a =(ax,ay);
@@ -313,6 +336,17 @@ fn draw_einfach(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) 
 
         draw_line_segment_mut(image, (dx-pf,dy-pf), d, color_black);
         draw_line_segment_mut(image, (dx-pf,dy+pf), d, color_black);
+
+        // Zeichne m1
+        let scale= 40.0;
+        let font_scale = Scale { x: scale, y: scale };
+        let font_normal = FontCollection::from_bytes(Vec::from(include_bytes!("VeraMono.ttf") as &[u8]))
+            .unwrap().into_font().unwrap();
+
+        let m1 = relation.get_beschr_startknoten();
+        println!("Draw m1 :: {}", m1);
+        draw_text_mut(image, color_black, dx as u32 ,
+                      dy as u32, font_scale, &font_normal, m1);
     }
         else if y2<=y1 && y2+height2>=y1  && x2<x1{
             let ax =x2+widht2;
@@ -329,6 +363,18 @@ fn draw_einfach(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) 
 
             draw_line_segment_mut(image, (dx-pf,dy-pf), d, color_black);
             draw_line_segment_mut(image, (dx-pf,dy+pf), d, color_black);
+
+            // Zeichne m1
+            let scale= 40.0;
+            let font_scale = Scale { x: scale, y: scale };
+            let font_normal = FontCollection::from_bytes(Vec::from(include_bytes!("VeraMono.ttf") as &[u8]))
+                .unwrap().into_font().unwrap();
+
+            let m1 = relation.get_beschr_startknoten();
+            println!("Draw m1 :: {}", m1);
+            draw_text_mut(image, color_black, dx as u32 ,
+                          dy as u32, font_scale, &font_normal, m1);
+
         }else if y2>=y1 && y2+height2>=y1  && x2<x1{
             let ax =x2+widht2;
             let ay =y2+height2*0.5; let a =(ax,ay);
@@ -344,6 +390,17 @@ fn draw_einfach(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) 
 
             draw_line_segment_mut(image, (ax+pf,ay-pf), a, color_black);
             draw_line_segment_mut(image, (ax+pf,ay+pf), a, color_black);
+
+            // Zeichne m1
+            let scale= 40.0;
+            let font_scale = Scale { x: scale, y: scale };
+            let font_normal = FontCollection::from_bytes(Vec::from(include_bytes!("VeraMono.ttf") as &[u8]))
+                .unwrap().into_font().unwrap();
+
+            let m1 = relation.get_beschr_startknoten();
+            println!("Draw m1 :: {}", m1);
+            draw_text_mut(image, color_black, dx as u32 ,
+                          dy as u32, font_scale, &font_normal, m1);
 
         }else if y2<=y1 && y2+height2>=y1  && x2>x1 {
             let ax = x1 + widht1;
@@ -367,6 +424,16 @@ fn draw_einfach(relation: &Relation, image: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) 
 
             draw_line_segment_mut(image, (dx-pf,dy-pf), d, color_black);
             draw_line_segment_mut(image, (dx-pf,dy+pf), d, color_black);
+            // Zeichne m1
+            let scale= 40.0;
+            let font_scale = Scale { x: scale, y: scale };
+            let font_normal = FontCollection::from_bytes(Vec::from(include_bytes!("VeraMono.ttf") as &[u8]))
+                .unwrap().into_font().unwrap();
+
+            let m1 = relation.get_beschr_startknoten();
+            println!("Draw m1 :: {}", m1);
+            draw_text_mut(image, color_black, dx as u32 ,
+                          dy as u32, font_scale, &font_normal, m1);
 
         }
 

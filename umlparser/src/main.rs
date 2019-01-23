@@ -20,8 +20,8 @@ use crate::parser::useCaseDiagramm::usecasediagramm::Usecasediagramm;
 
 fn main() {
 
-    //start_rocket();
-    test();
+    start_rocket();
+    //test();
     //test_usecase();
     //test_actor();
     //test_boundary();

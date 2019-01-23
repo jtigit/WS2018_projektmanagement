@@ -116,7 +116,8 @@ pub fn parse_klassendiagramme(input: &String)->Vec<Klassendiagramm> {
         let mut klassen = baue_klassen(klassendiagramm);
         let mut relationen = relation::baue_relationen(klassendiagramm, &mut klassen);
         if !klassen.is_empty() {
-            graphbuilder::create_graph(&mut klassen,&mut relationen);
+            graphbuilder::create_layout(&mut klassen,&mut relationen);
+            //graphbuilder::create_graph(&mut klassen,&mut relationen);
             let a:Klassendiagramm = Klassendiagramm{klassen:klassen.clone(),relationen:relationen.clone()};
             klassendiagramme.push(a);
         }

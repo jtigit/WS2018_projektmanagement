@@ -15,6 +15,8 @@ use rocket_contrib::templates::Template;
 use tera::Context;
 use rocket::http::RawStr;
 
+extern crate base64;
+
 use crate::parser::parser;
 use crate::parser::klassendiagramm::klassendiagramm::Klassendiagramm;
 use crate::parser::useCaseDiagramm::usecasediagramm;
@@ -100,12 +102,13 @@ pub fn submit_task(eingabe: Form<Eingabe>) -> Flash<Redirect> {
 
 #[get("/<uml>")]
 pub fn img(uml: &RawStr, flash: Option<FlashMessage>) -> Option<NamedFile> {
-    let s =  uml.as_str();
+    let bytes = base64::decode(uml.as_str()).unwrap();
+    //let s =  uml.as_str();
 
     //let s = flash.map(|msg| format!("{}", msg.msg())).unwrap_or_else(|| "abc -> def".to_string());
     let now = time::get_time();
 
-    let kdv: Vec<Klassendiagramm> = parser::starte_umlparser(&String::from(s)).get_klassendiagramme();
+    let kdv: Vec<Klassendiagramm> = parser::starte_umlparser(&String::from(bytes)).get_klassendiagramme();
     //let usv: Vec<Usecasediagramm> = parser::starte_umlparser(&s).get_usecasediagramme();
 
     if kdv.get(0).is_some() {

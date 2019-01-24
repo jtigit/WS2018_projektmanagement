@@ -10,6 +10,22 @@
         });
     });
 
+    function handleSubmit(form) {
+
+
+        var encoded = btoa(form.value.value);
+
+        $('#send').attr('disabled', true);
+
+        $('#img').attr("src", "http://localhost:8000/" + encoded);
+    }
+    
+    function del() {
+        $('#send').attr('disabled', true);
+        $('#eingabe').val('');
+        $('#img').attr("src", "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D");
+    }
+
     function  doDLImg(s) {
         var a = document.createElement('a');
         a.href = s;
@@ -34,12 +50,12 @@
 
 <div id="base" class="container p-3 bg-white rounded shadow-sm position-relative box">
         <div class="row">
-            <form id="form" class="col-lg-6 col-sm-12 mb-2 half" action="/api/submit" method="post">
+            <form id="form" class="col-lg-6 col-sm-12 mb-2 half" action="javascript:void(0);" method="post" onsubmit="return handleSubmit(this)">
                 <div class="form-group h-75">
                     <h2 class="ml-3"><i class="fas fa-edit"></i> Eingabe</h2>
                     <textarea class="form-control shadow-sm h-75" id="eingabe" name="value">{{input_message}}</textarea>
                     <div class="d-inline-block pt-2 float-right">
-                        <button class="btn btn-danger" name="action" value="delete" type="submit"><i>Delete</i><i class="fas fa-trash-alt"></i></button>
+                        <button class="btn btn-danger" name="action" value="delete" type="button" onclick="del()"><i>Delete</i><i class="fas fa-trash-alt"></i></button>
                         <button class="btn btn-primary ml-auto" type="button" download="uml.txt" onclick='doDL(document.getElementById("eingabe").value)'><i>Save</i> <i class="fas fa-save"></i></button>
                         <button id="send" class="btn btn-success" name="action" value="send" type="submit" disabled><i>Refresh </i><i class="fas fa-sync"></i></button>
                     </div>

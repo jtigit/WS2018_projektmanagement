@@ -93,7 +93,8 @@ fn start_rocket() {
                  routes::routes::index,
                  routes::routes::about,
                  routes::routes::howto,
-                 routes::routes::static_content
+                 routes::routes::static_content,
+                 routes::routes::img
             ]
         ).mount(
         "/api",

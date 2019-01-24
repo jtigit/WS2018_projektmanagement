@@ -3,51 +3,69 @@
 <head>
 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UMLParser</title>
 
     <link rel="stylesheet" href="/static/css/main.css">
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
 
     <link rel="stylesheet" href="/static/js/fancybox/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
     <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script type="text/javascript" src="static/js/fancybox/jquery-1.4.3.min.js"></script>
+    <script src="/static/js/jquery-3.3.1.slim.min.js"></script>
+    <script src="/static/js/popper.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+
+
     <script type="text/javascript" src="static/js/fancybox/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
 
     <!-- Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-<body>
+<body id="body">
 <header>
-<nav>
-    <div class="nav-wrapper white">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a href="/" class="brand-logo black-text">UMLParser</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="/" class="grey-text text-darken-2">Startseite</a></li>
-                <li><a href="/howto" class="grey-text text-darken-2">Erklärung</a></li>
-                <li><a href="/about" class="grey-text text-darken-2">Über Uns</a></li>
-            </ul>
+            <a class="navbar-brand" href="#">UMLParser</a>
+            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item mr-2">
+                        <a class="nav-link" href="/"><i class="fas fa-home"></i> Startseite</a>
+                    </li>
+                    <li class="nav-item mr-2">
+                        <a class="nav-link" href="/howto"><i class="fas fa-question-circle mr-1"></i>Erklärung</a>
+                    </li>
+                    <li class="nav-item mr-2">
+                        <a class="nav-link" href="/about"><i class="fas fa-users mr-1"></i>Über Uns</a>
+                    </li>
+                </ul>
+
+            </div>
+
+
         </div>
-    </div>
-</nav>
+    </nav>
 </header>
 
-<main class="grey lighten-4">
+<main>
 {% block content %}
 {% endblock content %}
 </main>
-<footer class="page-footer grey">
-    <div class="container">
-        <div class="row">
-            <div class="col l6 s12">
-                © Copyright
-            </div>
-        </div>
+
+<div class="foot bg-dark">
+    <div class="container text-white text-center font-italic">
+        © UMLParser.de 2019
     </div>
-</footer>
+</div>
+
 
 <script>
     $(".materialboxed").fancybox({

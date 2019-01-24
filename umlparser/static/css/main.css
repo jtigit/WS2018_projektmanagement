@@ -1,7 +1,7 @@
-body {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
+html, #body {
+    min-height: 100% !important;
+    background-color: #edeaea;
+    position: relative;
 }
 
 main {
@@ -9,19 +9,74 @@ main {
 }
 
 #base {
-    height: 80vh;
-    min-height: 80vh;
+    min-height: calc(100vh - 56px - 32px);
+    background-color: white;
+    position: relative;
 }
 
-textarea {
-    resize: none;
+.box {
+    min-height: calc(100vh - 56px - 32px);
+    position: relative;
 }
 
-.height100 {
-    height: 100%;
-    min-height: 100%
+nav {
+    min-height: 56px;
+}
+
+.foot {
+    height: 32px;
+}
+
+form .btn i {
+    font-style: normal;
+    font-size: 16px;
+    font-weight: bold;
+    vertical-align: middle;
+}
+form .btn .fas {
+    font-size: 24px;
+    margin-left: 3px;
 }
 
 #img-bg {
     background-color: white;
+}
+
+#loader {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.75) url(images/loading2.gif) no-repeat center center;
+    z-index: 10000;
+}
+
+@media (max-width: 991.98px) {
+    #base {
+        box-shadow: none!important;
+    }
+    body header nav .container {
+        max-width: 100%;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+    body main .container {
+        max-width: 100%;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    #body {
+        background-color: white;
+    }
+
+    .half {
+        min-height: calc(50vh - 28px - 20px) !important;
+    }
+
 }
